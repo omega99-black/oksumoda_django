@@ -4,6 +4,7 @@ Django settings para el proyecto Oksumoda.
 
 from pathlib import Path
 from decouple import config
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -13,7 +14,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-cambia-esto-en-produccion')
 DEBUG = config('DEBUG', default=True, cast=bool)
 ALLOWED_HOSTS = ['*']
-#CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='http://localhost:8000').split(',')
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.up.railway.app',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+
 # ──────────────────────────────────────────────
 # APLICACIONES INSTALADAS
 # ──────────────────────────────────────────────
@@ -44,7 +50,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # ──────────────────────────────────────────────
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ← para servir archivos estáticos en Railway
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -83,8 +89,6 @@ WSGI_APPLICATION = 'oksumoda.wsgi.application'
 # ──────────────────────────────────────────────
 # BASE DE DATOS
 # ──────────────────────────────────────────────
-# Database configuration (SQLite local / PostgreSQL Cloud)
-import dj_database_url
 DATABASES = {
     'default': config(
         'DATABASE_URL',
