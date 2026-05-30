@@ -1,0 +1,50 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Productos | Oksu Moda Admin</title>
+</head>
+
+<body>
+
+    <div th:replace="~{admin/dashboard :: sidebar}"></div>
+
+    <div class="main">
+        <h1> Gestión de Productos</h1>
+
+        <a th:href="@{/admin/productos/nuevo}" class="btn-nuevo"> Crear Nuevo Producto</a>
+
+        <table class="crud-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="producto : ${productos}">
+                    <td th:text="${producto.id}">1</td>
+                    <td th:text="${producto.nombre}">Camiseta Oksu</td>
+                    <td th:text="${#numbers.formatCurrency(producto.precio)}">$50,000</td>
+                    <td th:text="${producto.stock}">150</td>
+                    <td>
+                        <a th:href="@{/admin/productos/editar/{id}(id=${producto.id})}"
+                            class="btn-accion btn-editar">Editar</a>
+                        <a th:href="@{/admin/productos/eliminar/{id}(id=${producto.id})}"
+                            class="btn-accion btn-eliminar"
+                            onclick="return confirm('¿Estás seguro de que quieres eliminar este producto?');">Eliminar</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(productos)}">
+                    <td colspan="5" style="text-align: center;">No se encontraron productos registrados.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

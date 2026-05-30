@@ -1,0 +1,31 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<div th:fragment="categoriaForm" class="form-container">
+    
+    <h2 class="form-crud" th:text="${categoria.idCategoria == null ? ' Crear Nueva Categoría' : ' Editar Categoría: ' + categoria.nombre}"></h2>
+
+    <form th:action="@{/admin/categorias/guardar}" th:object="${categoria}" method="post" class="crud-form">
+        
+        <input type="hidden" th:field="*{idCategoria}" /> 
+
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" th:field="*{nombre}" required>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-guardar" 
+                    th:text="${categoria.idCategoria == null ? ' Guardar Categoría' : ' Actualizar Categoría'}">Guardar</button>
+            
+            <a th:href="@{/admin/dashboard(view='categorias')}" class="btn-cancelar"> Cancelar</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

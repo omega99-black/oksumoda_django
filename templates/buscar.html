@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Búsqueda - Oksumoda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/hombres.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+
+  <header class="barra-superior">
+    <div class="barra-inner">
+      <div class="barra-izq">
+        {% if request.user.is_authenticated and request.user.es_admin %}
+          <a href="/admin/dashboard/" class="btn-admin"><i class="bi bi-clipboard-fill"></i></a>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+          <span class="saludo">Hola, <strong>{{ request.user.nombre }}</strong></span>
+        {% endif %}
+      </div>
+      <span class="texto-envio">✦ Envíos gratis desde $150.000 ✦</span>
+      <div class="barra-der">
+        <label for="search-input" class="icono-barra"><i class="fas fa-search"></i></label>
+        <input id="search-input" type="text" placeholder="Buscar productos..." value="{{ query }}" class="visible" onkeydown="buscarProducto(event)">
+        <a href="/contactanos/" class="icono-barra"><i class="fas fa-user"></i></a>
+        <div class="separador-barra"></div>
+        <a href="/carrito/" class="icono-barra carrito-wrap">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="badge-carrito">{{ cantidadItems }}</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="navbar">
+    <a href="/" class="logo"><img src="{% static 'imágenes/v290_388.png' %}" alt="Logo"></a>
+    <div class="menu-nav">
+      <a href="/hombres/" class="link-nav">Hombres</a>
+      <a href="/mujeres/" class="link-nav">Mujeres</a>
+      <a href="/ninos/"   class="link-nav">Niños</a>
+      <a href="/otros/"   class="link-nav">Otros</a>
+    </div>
+    <div class="auth-section">
+      {% if not request.user.is_authenticated %}
+        <a href="/login/" class="link-auth">Iniciar sesión</a>
+        <span class="sep-v"></span>
+        <a href="/registro/" class="link-auth link-auth--cta">Crear cuenta</a>
+      {% else %}
+        <form action="/logout/" method="post">{% csrf_token %}<button type="submit" class="btn-logout">Cerrar sesión</button></form>
+      {% endif %}
+    </div>
+  </nav>
+  <hr class="linea-nav">
+
+  <main class="pagina-contenido">
+    <section class="hero-categoria">
+      <div class="hero-cat-inner">
+        <p class="hero-cat-tag">— Búsqueda</p>
+        <h1 class="hero-cat-titulo">{% if query %}"{{ query }}"{% else %}Buscar productos{% endif %}</h1>
+        <p class="hero-cat-sub">
+          {% if productos %}{{ productos|length }} producto{{ productos|length|pluralize }} encontrado{{ productos|length|pluralize }}
+          {% elif query %}No encontramos resultados para tu búsqueda{% endif %}
+        </p>
+      </div>
+    </section>
+
+    <section class="seccion-productos">
+      <div class="grid-productos">
+        {% for producto in productos %}
+        <div class="tarjeta-producto">
+          <div class="imagen-producto">
+            {% if producto.es_nuevo %}<span class="etiqueta-nuevo">NUEVO</span>{% endif %}
+            {% if producto.precio_anterior and not producto.es_nuevo %}<span class="etiqueta-descuento">OFERTA</span>{% endif %}
+            {% if producto.foto %}
+              <img src="/media/productos/{{ producto.foto }}" alt="{{ producto.nombre }}" class="img-principal" onerror="this.src='{% static 'imágenes/sin-imagen.jpg' %}'">
+            {% else %}
+              <img src="{% static 'imágenes/sin-imagen.jpg' %}" alt="{{ producto.nombre }}" class="img-principal">
+            {% endif %}
+            <div class="acciones-rapidas">
+              <a href="/producto/{{ producto.id_producto }}/" class="btn-accion"><i class="fas fa-eye"></i></a>
+              <button class="btn-accion btn-agregar-carrito" data-id="{{ producto.id_producto }}" data-talla="{{ producto.get_tallas_list.0 }}" data-color="{{ producto.get_colores_list.0 }}"><i class="fas fa-shopping-bag"></i></button>
+              <button class="btn-accion"><i class="far fa-heart"></i></button>
+            </div>
+          </div>
+          <div class="info-producto">
+            <a href="/producto/{{ producto.id_producto }}/" style="text-decoration:none;color:inherit;">
+              <h3 class="nombre-producto">{{ producto.nombre }}</h3>
+            </a>
+            <p class="categoria-producto">{{ producto.subcategoria }}</p>
+            <div class="precio-producto">
+              {% if producto.precio_anterior %}<span class="precio-anterior">${{ producto.precio_anterior|floatformat:0 }}</span>{% endif %}
+              <span class="precio-actual">${{ producto.precio|floatformat:0 }}</span>
+            </div>
+            <div class="colores-disponibles">
+              {% for color in producto.get_colores_list %}
+                <span class="color-muestra" title="{{ color }}" style="background:{% if color == 'Negro' %}#1a1a1a{% elif color == 'Blanco' %}#ffffff{% elif color == 'Azul' %}#2c5aa0{% elif color == 'Rojo' %}#c41e3a{% elif color == 'Gris' %}#4a4a4a{% elif color == 'Café' %}#8b4513{% elif color == 'Rosa' %}#ff69b4{% else %}#888{% endif %};{% if color == 'Blanco' %}border:1px solid #ddd;{% endif %}"></span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% empty %}
+          <div style="text-align:center;padding:60px 20px;grid-column:1/-1;">
+            <i class="fas fa-search" style="font-size:50px;color:#ccc;margin-bottom:20px;display:block;"></i>
+            <h4 style="color:#999;margin-bottom:8px;">No encontramos "{{ query }}"</h4>
+            <p style="color:#bbb;margin-bottom:20px;">Intenta con otro término o explora nuestras categorías</p>
+            <a href="/" style="display:inline-block;padding:10px 25px;background:#0f0f0f;color:white;border-radius:30px;text-decoration:none;font-weight:600;">Ver todos los productos</a>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col"><h4>Oksumoda</h4><ul><li><a href="#">Nuestra historia</a></li><li><a href="#">Trabaja con nosotros</a></li><li><a href="#">Sostenibilidad</a></li></ul></div>
+      <div class="footer-col"><h4>Ayuda</h4><ul><li><a href="#">Envíos</a></li><li><a href="#">Devoluciones</a></li><li><a href="#">Guía de tallas</a></li></ul></div>
+      <div class="footer-col"><h4>Síguenos</h4><div class="redes"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div></div>
+    </div>
+    <div class="footer-copy"><p>&copy; 2025 Oksumoda. Todos los derechos reservados.</p></div>
+  </footer>
+
+  <script>
+    const searchLabel = document.querySelector('label[for="search-input"]');
+    const searchInput = document.getElementById('search-input');
+    searchLabel.addEventListener('click', () => { const v = searchInput.classList.toggle('visible'); if (v) searchInput.focus(); });
+    function buscarProducto(e) { if (e.key === 'Enter') { const q = searchInput.value.trim(); if (q) window.location.href = '/buscar/?q=' + encodeURIComponent(q); } }
+    document.querySelectorAll('.btn-agregar-carrito').forEach(btn => { btn.addEventListener('click', function (e) { e.preventDefault(); fetch('/carrito/agregar/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRFToken': '{{ csrf_token }}' }, body: `productoId=${this.dataset.id}&cantidad=1&talla=${this.dataset.talla}&color=${this.dataset.color}` }).then(r => r.json()).then(data => { if (data.success) { document.querySelector('.badge-carrito').textContent = data.cantidadItems; alert('✅ ' + data.message); } else alert('❌ ' + data.message); }); }); });
+  </script>
+</body>
+</html>

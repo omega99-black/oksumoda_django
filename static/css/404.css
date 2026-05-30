@@ -1,0 +1,96 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  font-family: 'Instrument Sans', sans-serif;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.v103_126 {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  z-index: 1;
+}
+
+/* Fondo con imagen que cubre toda la pantalla */
+.v157_264 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("../imágenes/v157_264.png") no-repeat center center;
+  background-size: cover;
+  z-index: 0;
+  opacity: 0.3; /* Puedes ajustar esto si quieres que el fondo no opaque el texto */
+}
+
+/* Número 404 */
+.v157_266 {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.5rem;
+  z-index: 2;
+}
+
+/* Título */
+.v157_271 {
+  color: #fff;
+  font-weight: 600;
+  font-size: 6vw;
+  margin-top: 2rem;
+  z-index: 2;
+}
+
+/* Subtítulo */
+.v188_221 {
+  color: #fff;
+  font-weight: 600;
+  font-size: 2vw;
+  max-width: 80%;
+  margin-top: 2rem;
+  z-index: 2;
+}
+.volver-inicio {
+  margin-top: 8rem;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: color 0.3s;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.volver-inicio:hover {
+  color: #EB0029;
+  cursor: pointer;
+}
+
+.name {
+  display: none;
+}
+.flecha {
+  font-size: 1.6rem;
+  color: white;
+}
+

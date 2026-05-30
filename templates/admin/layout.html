@@ -1,0 +1,30 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="layout(title, content)">
+
+    <head>
+        <meta charset="UTF-8">
+        <title th:replace="${title}">Panel de Administración</title>
+    </head>
+
+    <body>
+
+        <div class="sidebar" th:fragment="sidebar">
+            <a class="v290_388"></a>
+            <h2>Panel de Control</h2>
+            <a th:href="@{/admin/dashboard}">Inicio</a>
+            <a th:href="@{/admin/usuarios}">Usuarios</a>
+            <a th:href="@{/admin/productos}">Productos</a>
+            <a th:href="@{/admin/ventas}">Ventas</a>
+            <a th:href="@{/admin/reportes}">Reportes</a>
+        </div>
+
+        <div class="main">
+            <div th:repalce="${content}">
+                <p>Contenido por defecto.</p>
+            </div>
+        </div>
+</div>
+</body>
+
+</html>

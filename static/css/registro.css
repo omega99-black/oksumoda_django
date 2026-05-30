@@ -1,0 +1,290 @@
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'Instrument Sans', sans-serif;
+}
+
+body {
+  background: url("../imágenes/v270_230.png") no-repeat center center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+/* Contenedor general */
+.form-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  padding-bottom: 100px;
+}
+
+/* Texto superior */
+.titulo-grande {
+  color: white;
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Cuadro blanco centrado */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Caja del formulario */
+.form-box {
+  background-color: white;
+  border-radius: 20px;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.form-box h2 {
+  font-size: 1.8em;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 600;
+  font-size: 1em;
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1em;
+}
+
+/* Fecha de nacimiento */
+.fecha-nacimiento {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 5px;
+}
+.fecha-nacimiento select {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1em;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Checkbox */
+.checkbox {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.checkbox input {
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 10px;
+}
+
+.rojo {
+  color: #EB0029;
+}
+
+/* Botón rojo */
+.boton {
+  display: block;
+  width: 100%;
+  background-color: #EB0029;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  margin-top: 25px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1.1em;
+  text-decoration: none;
+  transition: background 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.boton:hover {
+  background-color: #b0001e;
+}
+
+/* Link inferior */
+.link {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 1em;
+  color: #EB0029;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: #b0001e;
+}
+
+/* Logo */
+.logo-izquierda {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 80px;
+  height: 80px;
+  background: url("../imágenes/v285_356.png") no-repeat center center;
+  background-size: contain;
+  border-radius: 10px;
+}
+
+/* Select personalizado */
+.custom-select {
+  position: relative;
+  flex: 1;
+}
+
+.custom-select select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 35px 10px 10px;
+  font-size: 1em;
+  text-align: center;
+  cursor: pointer;
+}
+
+.custom-select::after {
+  content: "v";
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  font-size: 0.85em;
+  font-weight: normal;
+  color: white;
+  pointer-events: none;
+  font-family: sans-serif;
+}
+
+/* Mensajes de error */
+.error {
+  color: red;
+  font-size: 0.85em;
+  margin-top: 5px;
+  display: block;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(3px);
+  z-index: 0;
+}
+
+/* Eleva el formulario sobre el fondo oscuro */
+.form-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Sutil transición en los inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #EB0029;
+  box-shadow: 0 0 6px rgba(235,0,41,0.4);
+  outline: none;
+}
+
+/* Contenedor horizontal */
+.terminos-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+/* Checkbox + texto */
+.terminos {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95em;
+}
+
+/* Enlace de términos */
+.terminos a {
+  text-decoration: none;
+  color: #EB0029;
+  font-weight: 600;
+}
+
+.terminos a:hover {
+  text-decoration: underline;
+}
+
+/* Botón redondeado */
+.boton {
+  background-color: #EB0029;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 50px; /* forma redonda */
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Efecto hover y click */
+.boton:hover {
+  background-color: #c80022;
+}
+
+.boton:active {
+  background-color: #a0001b; /* rojo más oscuro al hacer clic */
+  transform: scale(0.98);
+}
+

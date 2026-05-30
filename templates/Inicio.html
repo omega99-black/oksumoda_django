@@ -1,0 +1,277 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Oksu Moda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/inicio.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       BARRA SUPERIOR FIJA
+  ══════════════════════════════════════════ -->
+  <header class="barra-superior">
+    <div class="barra-inner">
+
+      <!-- Izquierda: admin + saludo -->
+      <div class="barra-izq">
+        {% if request.user.is_authenticated and request.user.es_admin %}
+          <a href="/admin/dashboard/" class="btn-admin" title="Panel de Control">
+            <i class="bi bi-clipboard-fill"></i>
+          </a>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+          <span class="saludo">Hola, <strong>{{ request.user.nombre }}</strong></span>
+        {% endif %}
+      </div>
+
+      <!-- Centro: texto envío -->
+      <span class="texto-envio">✦ Envíos gratis desde $150.000 ✦</span>
+
+      <!-- Derecha: iconos -->
+      <div class="barra-der">
+        <label for="search-input" class="icono-barra" title="Buscar">
+          <i class="fas fa-search"></i>
+        </label>
+        <input id="search-input" type="text" placeholder="Buscar productos..." onkeydown="buscarProducto(event)">
+        <a href="/contactanos/" class="icono-barra" title="Mi cuenta">
+          <i class="fas fa-user"></i>
+        </a>
+        <div class="separador-barra"></div>
+        <a href="/carrito/" class="icono-barra carrito-wrap" title="Carrito">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="badge-carrito">{{ cantidadItems }}</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ══════════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════════ -->
+  <nav class="navbar">
+    <a href="/" class="logo">
+      <img src="{% static 'imágenes/v290_388.png' %}" alt="Logo">
+    </a>
+
+    <div class="menu-nav">
+      <a href="/hombres/" class="link-nav">Hombres</a>
+      <a href="/mujeres/" class="link-nav">Mujeres</a>
+      <a href="/ninos/"   class="link-nav">Niños</a>
+      <a href="/otros/"   class="link-nav">Otros</a>
+    </div>
+
+    <div class="auth-section">
+      {% if not request.user.is_authenticated %}
+        <a href="/login/"    class="link-auth">Iniciar sesión</a>
+        <span class="sep-v"></span>
+        <a href="/registro/" class="link-auth link-auth--cta">Crear cuenta</a>
+      {% else %}
+        <form action="/logout/" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn-logout">Cerrar sesión</button>
+        </form>
+      {% endif %}
+    </div>
+  </nav>
+
+  <hr class="linea-nav">
+
+
+  <!-- ══════════════════════════════════════════
+       HERO PRINCIPAL
+  ══════════════════════════════════════════ -->
+  <main class="hero">
+
+    <!-- Galería de imágenes collage -->
+    <div class="hero-galeria">
+
+      <div class="galeria-item g3" style="background-image:url('{% static 'imágenes/v290_404.png' %}')"></div>
+      <div class="galeria-item g7" style="background-image:url('{% static 'imágenes/v290_399.png' %}')"></div>
+
+      <div class="col-centro">
+        <div class="g2" style="background-image:url('{% static 'imágenes/v290_398.png' %}')"></div>
+        <div class="g5" style="background-image:url('{% static 'imágenes/v290_402.png' %}')"></div>
+        <div class="g4" style="background-image:url('{% static 'imágenes/v290_400.png' %}')"></div>
+      </div>
+
+      <div class="galeria-item g1" style="background-image:url('{% static 'imágenes/v290_408.png' %}')"></div>
+      <div class="galeria-item g6" style="background-image:url('{% static 'imágenes/v290_406.png' %}')"></div>
+
+    </div>
+
+    <!-- Contenido textual -->
+    <div class="hero-contenido">
+      <p class="hero-tag">— Nueva temporada</p>
+      <h1 class="hero-titulo">
+        Los estilos de<br>
+        <em>verano</em> finalmente<br>
+        están aquí
+      </h1>
+      <p class="hero-subtitulo">
+        Ediciones limitadas que no volverán.<br>
+        Consigue tus favoritos mientras estén disponibles.
+      </p>
+      <div class="hero-acciones">
+        <a href="/hombres/" class="btn-coleccion">
+          Ver colección <i class="fas fa-arrow-right"></i>
+        </a>
+        <div class="categorias-rapidas">
+          <a href="/hombres/" class="cat-pill">Hombres</a>
+          <a href="/mujeres/" class="cat-pill">Mujeres</a>
+          <a href="/ninos/"   class="cat-pill">Niños</a>
+          <a href="/otros/"   class="cat-pill">Otros</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Indicador scroll -->
+    <div class="scroll-hint">
+      <span>Explorar</span>
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </main>
+
+
+  <!-- ══════════════════════════════════════════
+       SECCIÓN CATEGORÍAS
+  ══════════════════════════════════════════ -->
+  <section class="seccion-categorias">
+    <h2 class="seccion-titulo">Compra por categoría</h2>
+    <div class="grid-categorias">
+      <a href="/hombres/" class="card-categoria">
+        <div class="card-cat-img" style="background-image:url('{% static 'imágenes/v290_399.png' %}')"></div>
+        <div class="card-cat-info">
+          <span>Hombres</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
+      <a href="/mujeres/" class="card-categoria">
+        <div class="card-cat-img" style="background-image:url('{% static 'imágenes/v290_404.png' %}')"></div>
+        <div class="card-cat-info">
+          <span>Mujeres</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
+      <a href="/ninos/" class="card-categoria">
+        <div class="card-cat-img" style="background-image:url('{% static 'imágenes/v290_402.png' %}')"></div>
+        <div class="card-cat-info">
+          <span>Niños</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
+      <a href="/otros/" class="card-categoria">
+        <div class="card-cat-img" style="background-image:url('{% static 'imágenes/v290_398.png' %}')"></div>
+        <div class="card-cat-info">
+          <span>Otros</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+      </a>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       BANNER ENVÍOS
+  ══════════════════════════════════════════ -->
+  <section class="banner-envios">
+    <div class="banner-item">
+      <i class="fas fa-truck"></i>
+      <div>
+        <strong>Envío gratis</strong>
+        <p>En compras desde $150.000</p>
+      </div>
+    </div>
+    <div class="banner-item">
+      <i class="fas fa-undo"></i>
+      <div>
+        <strong>Devoluciones fáciles</strong>
+        <p>30 días sin preguntas</p>
+      </div>
+    </div>
+    <div class="banner-item">
+      <i class="fas fa-lock"></i>
+      <div>
+        <strong>Pago seguro</strong>
+        <p>Tus datos siempre protegidos</p>
+      </div>
+    </div>
+    <div class="banner-item">
+      <i class="fas fa-headset"></i>
+      <div>
+        <strong>Soporte 24/7</strong>
+        <p>Estamos para ayudarte</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>Oksumoda</h4>
+        <ul>
+          <li><a href="#">Nuestra historia</a></li>
+          <li><a href="#">Trabaja con nosotros</a></li>
+          <li><a href="#">Sostenibilidad</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Ayuda</h4>
+        <ul>
+          <li><a href="#">Envíos</a></li>
+          <li><a href="#">Devoluciones</a></li>
+          <li><a href="#">Guía de tallas</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Síguenos</h4>
+        <div class="redes">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copy">
+      <p>&copy; 2025 Oksumoda. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+
+  <script>
+    /* ── Búsqueda ─────────────────────────────── */
+    const searchLabel = document.querySelector('label[for="search-input"]');
+    const searchInput = document.getElementById('search-input');
+
+    searchLabel.addEventListener('click', () => {
+      const visible = searchInput.classList.toggle('visible');
+      if (visible) searchInput.focus();
+    });
+
+    function buscarProducto(e) {
+      if (e.key === 'Enter') {
+        const q = searchInput.value.trim();
+        if (q) window.location.href = '/buscar/?q=' + encodeURIComponent(q);
+      }
+    }
+
+    /* ── Animación de entrada al hacer scroll ─── */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.card-categoria, .banner-item').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

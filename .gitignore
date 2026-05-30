@@ -1,0 +1,12 @@
+# Entorno virtual — se regenera con requirements.txt
+venv/
+
+# Caché de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pycache
+
+# Extensiones de VS Code
+.extension/

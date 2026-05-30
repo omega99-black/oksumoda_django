@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Registro | Crea tu cuenta</title>
+  <link href="https://fonts.googleapis.com/css?family=Instrument+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/registro.css' %}">
+</head>
+
+<body>
+  <div class="form-wrapper">
+    <div class="logo-izquierda"></div>
+
+    <div class="form-container">
+      <h1 class="titulo-grande">¡Solo para muchas veces!</h1>
+
+      <div class="form-box">
+        <h2>Crea tu cuenta gratis</h2>
+
+        <form id="registro-form" method="post" action="/registro/" novalidate>
+          {% csrf_token %}
+
+          <!-- Campo nombre -->
+          <label for="nombre">Tu Nombre Completo</label>
+          <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
+          <span class="error" id="nombre-error"></span>
+
+          <!-- Campo email -->
+          <label for="email">Tu correo electrónico</label>
+          <input type="email" id="email" name="email" placeholder="Ingresa tu correo" required>
+          <span class="error" id="email-error"></span>
+
+          <!-- Campo contraseña -->
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="contrasena" placeholder="Ingresa tu contraseña" required>
+          <span class="error" id="password-error"></span>
+
+          <!-- Confirmar contraseña -->
+          <label for="confirm-password">Confirmar Contraseña</label>
+          <input type="password" id="confirm-password" placeholder="Repite tu contraseña" required>
+          <span class="error" id="confirm-password-error"></span>
+
+          <!-- Checkbox términos -->
+          <div class="terminos-container">
+            <label class="terminos">
+              <input type="checkbox" id="terminos" required>
+              <span>Acepto los <a href="#" class="rojo">Términos y Condiciones</a></span>
+            </label>
+          </div>
+          <span class="error" id="terminos-error"></span>
+
+          <!-- Mensajes de error del servidor -->
+          {% if error %}
+            <p style="color:red;">{{ error }}</p>
+          {% endif %}
+
+          <button type="submit" class="boton">Crear una cuenta</button>
+
+          <a href="/login/" class="link">¿Ya tienes una cuenta?</a>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("registro-form").addEventListener("submit", function (e) {
+      const nombre = document.getElementById("nombre");
+      const email = document.getElementById("email");
+      const password = document.getElementById("password");
+      const confirmPassword = document.getElementById("confirm-password");
+      const terminos = document.getElementById("terminos");
+
+      const nombreError = document.getElementById("nombre-error");
+      const emailError = document.getElementById("email-error");
+      const passwordError = document.getElementById("password-error");
+      const confirmPasswordError = document.getElementById("confirm-password-error");
+      const terminosError = document.getElementById("terminos-error");
+
+      let valido = true;
+
+      nombreError.textContent = "";
+      emailError.textContent = "";
+      passwordError.textContent = "";
+      confirmPasswordError.textContent = "";
+      terminosError.textContent = "";
+
+      if (!nombre.value) {
+        nombreError.textContent = "El nombre es obligatorio.";
+        valido = false;
+      }
+
+      if (!email.value) {
+        emailError.textContent = "El correo electrónico es obligatorio.";
+        valido = false;
+      } else if (!isValidEmail(email.value)) {
+        emailError.textContent = "El formato del correo electrónico no es válido.";
+        valido = false;
+      }
+
+      if (!password.value) {
+        passwordError.textContent = "La contraseña es obligatoria.";
+        valido = false;
+      }
+
+      if (!confirmPassword.value) {
+        confirmPasswordError.textContent = "Debes confirmar la contraseña.";
+        valido = false;
+      }
+
+      if (password.value && confirmPassword.value && password.value !== confirmPassword.value) {
+        confirmPasswordError.textContent = "Las contraseñas no coinciden.";
+        valido = false;
+      }
+
+      if (!terminos.checked) {
+        terminosError.textContent = "Debes aceptar los Términos y Condiciones.";
+        valido = false;
+      }
+
+      if (!valido) {
+        e.preventDefault();
+      }
+    });
+
+    function isValidEmail(email) {
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regex.test(email);
+    }
+  </script>
+
+</body>
+</html>

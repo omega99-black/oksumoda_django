@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pago Confirmado - Oksumoda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/hombres.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .confirmacion-box { max-width: 520px; margin: 60px auto; background: white; border-radius: 20px; padding: 50px 40px; text-align: center; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .icono-check { font-size: 64px; margin-bottom: 20px; display: block; }
+    .conf-titulo { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .conf-sub { color: #888; font-size: 0.93rem; margin-bottom: 28px; }
+    .detalle { background: #f8f8f8; border-radius: 10px; padding: 16px 20px; margin-bottom: 28px; font-size: 0.93rem; text-align: left; }
+    .detalle strong { display: block; font-weight: 700; margin-bottom: 4px; color: #555; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .detalle span { font-size: 1rem; font-weight: 600; }
+    .btn-inicio { display: inline-block; background: #0f0f0f; color: white; padding: 13px 32px; border-radius: 50px; text-decoration: none; font-size: 0.95rem; font-weight: 700; transition: background 0.2s; }
+    .btn-inicio:hover { background: #EB0029; color: white; }
+  </style>
+</head>
+<body>
+
+  <header class="barra-superior">
+    <div class="barra-inner">
+      <div class="barra-izq"></div>
+      <span class="texto-envio">✦ Envíos gratis desde $150.000 ✦</span>
+      <div class="barra-der">
+        <a href="/carrito/" class="icono-barra carrito-wrap">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="badge-carrito">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="navbar">
+    <a href="/" class="logo"><img src="{% static 'imágenes/v290_388.png' %}" alt="Logo"></a>
+    <div class="menu-nav">
+      <a href="/hombres/" class="link-nav">Hombres</a>
+      <a href="/mujeres/" class="link-nav">Mujeres</a>
+      <a href="/ninos/"   class="link-nav">Niños</a>
+      <a href="/otros/"   class="link-nav">Otros</a>
+    </div>
+  </nav>
+  <hr class="linea-nav">
+
+  <main class="pagina-contenido">
+    <div class="confirmacion-box">
+      <span class="icono-check">✅</span>
+      <h2 class="conf-titulo">¡Pago recibido!</h2>
+      <p class="conf-sub">Tu pedido ha sido procesado exitosamente. Pronto recibirás más información.</p>
+
+      <div class="detalle">
+        <strong>Método de pago</strong>
+        <span>{% if metodo_pago == 'pse' %}PSE — Transferencia bancaria{% elif metodo_pago == 'debito' %}Tarjeta Débito{% else %}{{ metodo_pago }}{% endif %}</span>
+        <br><br>
+        <strong>Total pagado</strong>
+        <span>${{ total|floatformat:0 }}</span>
+      </div>
+
+      <a href="/" class="btn-inicio">Seguir comprando</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col"><h4>Oksumoda</h4><ul><li><a href="#">Nuestra historia</a></li></ul></div>
+      <div class="footer-col"><h4>Ayuda</h4><ul><li><a href="#">Envíos</a></li></ul></div>
+      <div class="footer-col"><h4>Síguenos</h4><div class="redes"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a></div></div>
+    </div>
+    <div class="footer-copy"><p>&copy; 2025 Oksumoda. Todos los derechos reservados.</p></div>
+  </footer>
+
+</body>
+</html>

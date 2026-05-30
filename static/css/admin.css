@@ -1,0 +1,985 @@
+/* -------------------- RESET Y BASE -------------------- */
+body {
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background: #f3f4f6;
+    /* gris suave moderno */
+    color: #333;
+    margin: 0;
+}
+
+/* -------------------- SIDEBAR -------------------- */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #111316;
+    /* gris oscuro elegante */
+    padding: 25px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 4px 0px 12px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar h2 {
+    font-size: 22px;
+    color: #ffffff;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: #e5e7eb;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.sidebar a:hover {
+    background-color: #374151;
+    color: #ffffff;
+}
+
+/* -------------------- CONTENIDO PRINCIPAL -------------------- */
+.main {
+    margin-left: 270px;
+    padding: 30px;
+}
+
+.main h1 {
+    color: #111827;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    margin-left: 600px;
+}
+
+/* Botón Crear Producto */
+.btn-nuevo {
+    display: inline-block;
+    padding: 12px 18px;
+    background-color: #3b82f6;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.2s ease;
+    margin-left: 160px;
+}
+
+.btn-nuevo:hover {
+    background-color: #2563eb;
+}
+
+/* -------------------- TABLA -------------------- */
+.crud-table {
+    width: 80%;
+    /* antes era 100% */
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(33, 32, 32, 0.193);
+    table-layout: fixed;
+    /* 👈 esto ALINEA perfectamente las columnas */
+}
+
+/* Header */
+.crud-table thead {
+    background: #e5e7eb;
+}
+
+.crud-table th {
+    padding: 16px 14px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #374151;
+}
+
+/* Filas */
+.crud-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #dcd5d5;
+}
+
+.crud-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* Descripción con "..." */
+.crud-table td:nth-child(3) {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* -------------------- BOTONES ACCIONES -------------------- */
+.btn-accion {
+    padding: 8px 6px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    margin-right: 0px;
+    transition: 0.2s ease;
+    display: inline-block;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.btn-editar {
+    background: #fbbf24;
+    color: #1f2937;
+}
+
+.btn-editar:hover {
+    background: #f59e0b;
+}
+
+.btn-eliminar {
+    background: #ef4444;
+}
+
+.btn-eliminar:hover {
+    background: #dc2626;
+}
+
+/* -------------------- TARJETAS DEL DASHBOARD -------------------- */
+.cards-grid {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.07);
+    text-align: center;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.card p {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1f2937;
+}
+
+/* --- ESTILOS GENERALES Y TÍTULO --- */
+
+/* Asumiendo que ya tienes estilos para .main y h1 que definen padding y colores */
+
+/* Contenedor del formulario */
+.form-crud {
+    max-width: 290px;
+    /* Limita el ancho del formulario para mejor legibilidad */
+    margin: 30px auto;
+    /* Centra el formulario en la página */
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+.form-view {
+    max-width: 1100px;
+    /* Limita el ancho del formulario para mejor legibilidad */
+    margin: 30px auto;
+    /* Centra el formulario en la página */
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    /* Sombra suave */
+}
+
+
+/* Título del formulario */
+.form-crud+h1 {
+    text-align: center;
+    color: #1e3b8f;
+}
+
+/* --- ESTILOS DE GRUPOS DE FORMULARIO --- */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    /* La etiqueta ocupa su propia línea */
+    font-weight: 600;
+    color: #34495e;
+    /* Color oscuro para la etiqueta */
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box;
+    /* Incluye padding y borde en el ancho total */
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #007bff;
+    /* Color primario al enfocar */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+    /* Elimina el contorno predeterminado del navegador */
+}
+
+.form-group textarea {
+    resize: vertical;
+    /* Permite redimensionar solo verticalmente */
+    min-height: 120px;
+    /* Altura mínima para la descripción */
+}
+
+/* --- ESTILOS DE BOTONES --- */
+.btn-guardar,
+.btn-cancelar {
+    display: inline-block;
+    padding: 12px 25px;
+    margin-right: 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-guardar {
+    background-color: #28a745;
+    /* Verde para guardar (Éxito) */
+    color: white;
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+}
+
+.btn-guardar:hover {
+    background-color: #1e7e34;
+}
+
+.btn-cancelar {
+    background-color: #f8f9fa;
+    /* Gris claro para cancelar */
+    color: #6c757d;
+    border: 1px solid #ced4da;
+}
+
+.btn-cancelar:hover {
+    background-color: #e2e6ea;
+    color: #495057;
+}
+
+.sidebar-bottom-link {
+    position: absolute;
+    /* Posicionamiento absoluto para fijarlo */
+    bottom: 45px;
+    /* Separación del borde inferior */
+    left: 240px;
+    /* Separación del borde izquierdo */
+    text-align: center;
+}
+
+.sidebar-bottom-link a {
+    display: flex;
+    /* Para alinear icono y texto horizontalmente */
+    align-items: center;
+    /* Centra verticalmente */
+    justify-content: center;
+    /* Centra horizontalmente */
+    padding: 10px 15px;
+    border-radius: 8px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.sidebar-bottom-link i {
+    font-size: 25px;
+    /* Tamaño del icono */
+}
+
+/* ==================================== */
+/* === Estilo para Botones de Acción (General) === */
+/* ==================================== */
+
+/* Estilo para botones de acción en la tabla o en el formulario */
+.btn-accion {
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 2px 0;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+/* Estilo para botón Editar */
+.btn-editar {
+    background-color: #3498DB;
+    /* Azul */
+    color: white;
+}
+
+.btn-editar:hover {
+    background-color: #2980B9;
+}
+
+/* Estilo para botón Eliminar */
+.btn-eliminar {
+    background-color: #E74C3C;
+    /* Rojo */
+    color: white;
+}
+
+.btn-eliminar:hover {
+    background-color: #C0392B;
+}
+
+/* ==================================== */
+/* === Estilo Específico para PDF (Nuevo) === */
+/* ==================================== */
+
+.btn-pdf {
+    /* Color de fondo: rojo/vino para destacar el PDF */
+    background-color: #f22e1c;
+    color: white !important;
+    /* Texto blanco */
+    border: 1px solid #cb3022;
+    /* Reutiliza estilos base de btn-accion si es posible */
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 160px;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.btn-pdf:hover {
+    background-color: #c42618;
+    /* Color más oscuro al pasar el ratón */
+    color: white !important;
+}
+
+/* Ajuste para que los botones en el formulario se vean ordenados */
+.form-actions {
+    display: flex;
+    /* Usa wrap para evitar que se salgan si hay muchos botones */
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    /* Espacio entre los botones */
+    margin-top: 20px;
+}
+
+.btn-success {
+    display: inline-flex;
+    align-items: center;
+    background-color: #d32f2f;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    margin-bottom: 17px;
+    font-size: 17px;
+    font-weight: 550;
+    transition: 0.2s ease;
+    margin-right: 160px;
+}
+
+.btn-success:hover {
+    background-color: #b71c1c;
+}
+
+/* ==================== ESTILOS MEJORADOS PARA FILTROS (UNIFICADO) ==================== */
+
+/* Contenedor principal del formulario de filtros */
+.filtros-clientes-form,
+.filtros-usuarios-form,
+.filtros-productos-form,
+.filtros-categorias-form {
+    margin-bottom: 30px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    margin-left: 100px;
+}
+
+/* Grid de las tarjetas de filtros (5 columnas para clientes/usuarios) */
+.filtros-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-bottom: 0;
+}
+
+/* Grid específico para productos (6 columnas) */
+.filtros-grid-productos {
+    display: grid;
+    grid-template-columns: repeat(3, 2fr);
+    gap: 15px;
+    margin-bottom: 0;
+}
+
+/* Grid específico para categorías (2 columnas: búsqueda amplia + acciones) */
+.filtros-grid-categorias {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 15px;
+    margin-bottom: 0;
+}
+
+/* Tarjeta individual de filtro */
+.filtro-card {
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.filtro-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Header de cada tarjeta de filtro */
+.filtro-header {
+    padding: 12px 15px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ==================== COLORES UNIFICADOS (ROJO Y NEGRO) ==================== */
+
+/* Todos los headers tienen el mismo gradiente rojo-negro */
+.filtro-nombre .filtro-header,
+.filtro-email .filtro-header,
+.filtro-telefono .filtro-header,
+.filtro-rol .filtro-header,
+.filtro-estado .filtro-header,
+.filtro-acciones .filtro-header,
+.filtro-precio-min .filtro-header,
+.filtro-precio-max .filtro-header,
+.filtro-stock .filtro-header {
+    background: linear-gradient(135deg, #f03333 0%, #000000 100%);
+}
+
+/* Excepción para categorías (púrpura) - opcional, puedes cambiarlo también */
+.filtros-categorias-form .filtro-nombre .filtro-header {
+    background: linear-gradient(135deg, #f03333 0%, #000000 100%);
+}
+
+/* Body de las tarjetas */
+.filtro-body {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Contenedor de input con botón de limpiar */
+.input-with-clear {
+    display: flex;
+    gap: 5px;
+    align-items: stretch;
+}
+
+/* ==================== ESTILOS PARA INPUTS Y SELECTS ==================== */
+
+/* Inputs de texto y número */
+.filtros-clientes-form .form-control,
+.filtros-usuarios-form .form-control,
+.filtros-productos-form .form-control,
+.filtros-categorias-form .form-control {
+    flex: 1;
+    padding: 10px 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    transition: all 0.2s ease;
+    background: #f9fafb;
+    color: #1f2937;
+}
+
+/* Placeholder */
+.filtros-clientes-form .form-control::placeholder,
+.filtros-usuarios-form .form-control::placeholder,
+.filtros-productos-form .form-control::placeholder,
+.filtros-categorias-form .form-control::placeholder {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* Focus en inputs */
+.filtros-clientes-form .form-control:focus,
+.filtros-usuarios-form .form-control:focus,
+.filtros-productos-form .form-control:focus,
+.filtros-categorias-form .form-control:focus {
+    border-color: #111112;
+    background: #ffffff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(240, 51, 51, 0.1);
+}
+
+/* Select específicos */
+.filtros-clientes-form select.form-control,
+.filtros-usuarios-form select.form-control,
+.filtros-productos-form select.form-control,
+.filtros-categorias-form select.form-control {
+    cursor: pointer;
+    padding-right: 30px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* Select cuando tiene valor seleccionado */
+.filtros-clientes-form select.form-control:not([value=""]),
+.filtros-usuarios-form select.form-control:not([value=""]),
+.filtros-productos-form select.form-control:not([value=""]),
+.filtros-categorias-form select.form-control:not([value=""]) {
+    font-weight: 500;
+    color: #1f2937;
+}
+
+/* Opciones del select */
+.filtros-clientes-form select.form-control option,
+.filtros-usuarios-form select.form-control option,
+.filtros-productos-form select.form-control option,
+.filtros-categorias-form select.form-control option {
+    padding: 10px;
+    background: #ffffff;
+    color: #1f2937;
+}
+
+/* Estilos para inputs de número (precio y stock) */
+.filtros-productos-form input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.filtros-productos-form input[type="number"]::-webkit-inner-spin-button,
+.filtros-productos-form input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Estilos para campos de precio y stock */
+.filtro-precio-min input,
+.filtro-precio-max input,
+.filtro-stock input {
+    font-weight: 600;
+}
+
+/* ==================== BOTÓN DE LIMPIAR INDIVIDUAL (🧹) ==================== */
+
+.btn-clear {
+    padding: 10px 12px;
+    background: #f3f4f6;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-clear:hover {
+    background: #ba1111;
+    border-color: #a51f1f;
+    transform: scale(1.05);
+}
+
+.btn-clear:active {
+    transform: scale(0.95);
+}
+
+/* ==================== BODY DE ACCIONES ==================== */
+
+.filtro-acciones-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+}
+
+/* Body de acciones horizontal para categorías */
+.filtro-acciones-body-horizontal {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.filtro-acciones-body-horizontal .btn-filtrar,
+.filtro-acciones-body-horizontal .btn-limpiar-todo {
+    flex: 1;
+}
+
+/* Botón Filtrar */
+.btn-filtrar {
+    width: 100%;
+    padding: 10px 15px;
+    background: linear-gradient(135deg, #f03333 0%, #000000 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(240, 51, 51, 0.3);
+    min-height: 42px;
+}
+
+.btn-filtrar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(240, 51, 51, 0.4);
+}
+
+.btn-filtrar:active {
+    transform: translateY(0);
+}
+
+/* Botón Limpiar Todo */
+.btn-limpiar-todo {
+    width: 100%;
+    padding: 10px 15px;
+    background: #f3f4f6;
+    color: #374151;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-limpiar-todo:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+    border-color: #d1d5db;
+}
+
+/* ==================== HEADER DE ACCIONES Y CONTADOR ==================== */
+
+.acciones-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+.acciones-left {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Contador de resultados */
+.contador-resultados {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #f03333 0%, #000000 100%);
+    padding: 10px 20px;
+    border-radius: 25px;
+    box-shadow: 0 4px 12px rgba(240, 51, 51, 0.3);
+}
+
+.contador-label {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.contador-badge {
+    background: #ffffff;
+    color: #1b1515;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 16px;
+    min-width: 40px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ==================== BADGES DE ESTADO ==================== */
+
+.badge-estado {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+/* ==================== BADGES DE ROL ==================== */
+
+.badge-rol {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+/* ==================== BADGES DE STOCK ==================== */
+
+.stock-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+/* ==================== ESTILO PARA NOMBRE DE CATEGORÍA EN TABLA ==================== */
+
+.nombre-categoria {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1f2937;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #ffe0e0 0%, #ffcccc 100%);
+    border-radius: 8px;
+    border-left: 4px solid #f03333;
+    transition: all 0.2s ease;
+}
+
+.nombre-categoria:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(240, 51, 51, 0.2);
+}
+
+/* ==================== TABLA VACÍA ==================== */
+
+.tabla-vacia {
+    text-align: center !important;
+    padding: 60px 20px !important;
+}
+
+.tabla-vacia p {
+    margin-top: 15px;
+    color: #6b7280;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* ==================== EFECTOS DE HOVER EN INPUTS ==================== */
+
+.input-with-clear:hover .form-control {
+    border-color: #d1d5db;
+}
+
+.input-with-clear:focus-within .form-control {
+    border-color: #f03333;
+}
+
+/* Sombra suave en hover para inputs */
+.filtros-clientes-form .form-control:hover:not(:focus),
+.filtros-usuarios-form .form-control:hover:not(:focus),
+.filtros-productos-form .form-control:hover:not(:focus),
+.filtros-categorias-form .form-control:hover:not(:focus) {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Indicador visual cuando hay texto en el input */
+.filtros-clientes-form .form-control:not(:placeholder-shown),
+.filtros-usuarios-form .form-control:not(:placeholder-shown),
+.filtros-productos-form .form-control:not(:placeholder-shown),
+.filtros-categorias-form .form-control:not(:placeholder-shown) {
+    background: #ffffff;
+    border-color: #f03333;
+    font-weight: 500;
+}
+
+/* ==================== ANIMACIONES ==================== */
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.filtros-grid,
+.filtros-grid-productos,
+.filtros-grid-categorias {
+    animation: slideDown 0.3s ease-out;
+}
+
+/* Transición suave para todos los elementos interactivos */
+.filtro-card *,
+.btn-clear,
+.btn-filtrar,
+.btn-limpiar-todo,
+.form-control {
+    transition: all 0.2s ease;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 1600px) {
+    .filtros-grid-productos {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .filtros-grid-productos .filtro-acciones {
+        grid-column: span 3;
+    }
+}
+
+@media (max-width: 1400px) {
+    .filtros-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .filtro-acciones {
+        grid-column: span 3;
+    }
+    
+    .filtro-acciones-body {
+        flex-direction: row;
+        justify-content: center;
+    }
+    
+    .btn-filtrar,
+    .btn-limpiar-todo {
+        width: auto;
+        min-width: 150px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .filtros-grid-productos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .filtros-grid-productos .filtro-acciones {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 992px) {
+    .filtros-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .filtro-acciones {
+        grid-column: span 2;
+    }
+    
+    .filtros-grid-categorias {
+        grid-template-columns: 1fr;
+    }
+    
+    .filtro-acciones-body-horizontal {
+        flex-direction: column;
+    }
+    
+    .filtro-acciones-body-horizontal .btn-filtrar,
+    .filtro-acciones-body-horizontal .btn-limpiar-todo {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .filtros-grid,
+    .filtros-grid-productos {
+        grid-template-columns: 1fr;
+    }
+    
+    .filtro-acciones,
+    .filtros-grid-productos .filtro-acciones {
+        grid-column: span 1;
+    }
+    
+    .acciones-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .acciones-left {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .acciones-left a {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .filtros-clientes-form,
+    .filtros-usuarios-form,
+    .filtros-productos-form,
+    .filtros-categorias-form {
+        padding: 15px;
+    }
+}

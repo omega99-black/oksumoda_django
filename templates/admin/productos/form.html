@@ -1,0 +1,157 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<div class="form-container">
+
+    <h2 class="form-crud">
+        {% if producto.id_producto %}
+            Editar Producto: {{ producto.nombre }}
+        {% else %}
+            Crear Nuevo Producto
+        {% endif %}
+    </h2>
+
+    <form action="{% url 'admin_productos_guardar' %}" method="post" class="crud-form">
+        {% csrf_token %}
+
+        {% if producto.id_producto %}
+            <input type="hidden" name="id_producto" value="{{ producto.id_producto }}">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" value="{{ producto.nombre|default:'' }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="precio">Precio:</label>
+            <input type="number" id="precio" name="precio" value="{{ producto.precio|default:'' }}" step="any" min="0" required>
+        </div>
+
+        <div class="form-group">
+            <label for="stock">Cantidad en Stock:</label>
+            <input type="number" id="stock" name="stock" value="{{ producto.stock|default:'' }}" step="1" min="0" required>
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion">{{ producto.descripcion|default:'' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="foto">URL de la Foto:</label>
+            <input type="text" id="foto" name="foto" value="{{ producto.foto|default:'' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="estado">Estado:</label>
+            <select id="estado" name="estado">
+                <option value="activo"   {% if producto.estado == 'activo'   %}selected{% endif %}>Activo</option>
+                <option value="inactivo" {% if producto.estado == 'inactivo' %}selected{% endif %}>Inactivo</option>
+            </select>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- CATEGORÍA                                  -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="form-group">
+            <label for="categoria">Categoría:</label>
+            <select id="categoria" name="categoria" onchange="actualizarSubcategorias()">
+                <option value="">-- Selecciona una categoría --</option>
+                <option value="Hombres" {% if producto.categoria == 'Hombres' %}selected{% endif %}>Hombres</option>
+                <option value="Mujeres" {% if producto.categoria == 'Mujeres' %}selected{% endif %}>Mujeres</option>
+                <option value="Niños"   {% if producto.categoria == 'Niños'   %}selected{% endif %}>Niños</option>
+                <option value="Otros"   {% if producto.categoria == 'Otros'   %}selected{% endif %}>Otros</option>
+            </select>
+        </div>
+
+        <!-- ══════════════════════════════════════════ -->
+        <!-- SUBCATEGORÍA — dropdown dinámico          -->
+        <!-- ══════════════════════════════════════════ -->
+        <div class="form-group">
+            <label for="subcategoria">Subcategoría:</label>
+            <select id="subcategoria" name="subcategoria">
+                <option value="">-- Selecciona primero una categoría --</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="tallas">Tallas (separadas por coma):</label>
+            <input type="text" id="tallas" name="tallas" value="{{ producto.tallas|default:'' }}" placeholder="S,M,L,XL">
+        </div>
+
+        <div class="form-group">
+            <label for="colores">Colores (separados por coma):</label>
+            <input type="text" id="colores" name="colores" value="{{ producto.colores|default:'' }}" placeholder="Negro,Blanco,Azul">
+        </div>
+
+        <div class="form-group">
+            <label for="precio_anterior">Precio Anterior:</label>
+            <input type="number" id="precio_anterior" name="precio_anterior" value="{{ producto.precio_anterior|default:'' }}" step="any" min="0">
+        </div>
+
+        <div class="form-group check-group">
+            <input type="checkbox" id="es_nuevo" name="es_nuevo" {% if producto.es_nuevo %}checked{% endif %}>
+            <label for="es_nuevo">Marcar como nuevo</label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-guardar">
+                {% if producto.id_producto %}Actualizar Producto{% else %}Guardar Producto{% endif %}
+            </button>
+            <a href="{% url 'admin_dashboard' %}?view=productos" class="btn-cancelar">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    // ─── Subcategorías por categoría ──────────────────────────────────────────
+    const subcategoriasMap = {
+        'Hombres': ['Camisetas', 'Pantalones', 'Chaquetas', 'Zapatos', 'Accesorios', 'Ropa Interior', 'Deportivo'],
+        'Mujeres': ['Blusas', 'Vestidos', 'Faldas', 'Pantalones', 'Chaquetas', 'Zapatos', 'Accesorios', 'Ropa Interior'],
+        'Niños':   ['Camisetas', 'Pantalones', 'Vestidos', 'Zapatos', 'Accesorios', 'Pijamas', 'Uniforme'],
+        'Otros':   ['Hogar', 'Mascotas', 'Deporte', 'Tecnología', 'Regalos', 'Temporada']
+    };
+
+    // Valor guardado en BD (para modo editar) — Django lo inyecta al renderizar
+    const subcategoriaGuardada = "{{ producto.subcategoria|default:''|escapejs }}";
+
+    function actualizarSubcategorias() {
+        const categoria = document.getElementById('categoria').value;
+        const subSelect = document.getElementById('subcategoria');
+
+        subSelect.innerHTML = '';
+
+        const opciones = subcategoriasMap[categoria];
+
+        if (!opciones) {
+            subSelect.innerHTML = '<option value="">-- Selecciona primero una categoría --</option>';
+            return;
+        }
+
+        // Opción vacía inicial
+        const empty = document.createElement('option');
+        empty.value = '';
+        empty.textContent = '-- Selecciona una subcategoría --';
+        subSelect.appendChild(empty);
+
+        opciones.forEach(sub => {
+            const opt = document.createElement('option');
+            opt.value = sub;
+            opt.textContent = sub;
+            // Re-selecciona el valor guardado en BD (modo editar)
+            if (sub === subcategoriaGuardada) opt.selected = true;
+            subSelect.appendChild(opt);
+        });
+    }
+
+    // Al cargar la página: si ya hay categoría (modo editar), rellenar subcategorías
+    document.addEventListener('DOMContentLoaded', actualizarSubcategorias);
+</script>
+
+</body>
+</html>

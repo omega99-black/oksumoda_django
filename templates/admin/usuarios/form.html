@@ -1,0 +1,57 @@
+<div th:fragment="usuarioForm" class="usuario-form-container">
+    <h2 th:text="${usuario.idUsuario == null ? ' Crear Nuevo Usuario' : ' Editar Usuario: ' + usuario.nombre}">Form Title</h2>
+
+    <form th:action="@{/admin/usuarios/guardar}" th:object="${usuario}" method="post" class="crud-form">
+        
+        <!-- 🔥 CORRECCIÓN: Usar idUsuario (con camelCase) -->
+        <input type="hidden" th:field="*{idUsuario}" /> 
+
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" th:field="*{nombre}" required />
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" required />
+        </div>
+        
+        <div class="form-group">
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" 
+                   id="contrasena" 
+                   th:field="*{contrasena}"
+                   th:placeholder="${usuario.idUsuario == null ? 'Ingrese una contraseña' : 'Dejar vacío para mantener la actual'}" 
+                   th:required="${usuario.idUsuario == null}" />
+            <small th:if="${usuario.idUsuario != null}" style="color: #666;">
+                Deja este campo vacío si no deseas cambiar la contraseña
+            </small>
+        </div>
+        
+        <div class="form-group">
+            <label for="rol">Rol:</label>
+            <select id="rol" name="rol.idRol" required>
+                <option value="">-- Seleccione un rol --</option>
+                <option th:each="rolItem : ${roles}" 
+                        th:value="${rolItem.idRol}" 
+                        th:text="${rolItem.nombre}"
+                        th:selected="${usuario.rol != null and usuario.rol.idRol == rolItem.idRol}">
+                    Rol Nombre
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="estado">Estado:</label>
+            <select id="estado" th:field="*{estado}" required>
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+            </select>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-guardar"> Guardar</button>
+            <a th:href="@{/admin/dashboard(view='usuarios')}" class="btn-cancelar"> Cancelar</a>
+        </div>
+    </form>
+</div>
