@@ -1,1 +1,1 @@
-web: gunicorn oksumoda.wsgi --log-file -git add .
+web: gunicorn oksumoda.wsgi
