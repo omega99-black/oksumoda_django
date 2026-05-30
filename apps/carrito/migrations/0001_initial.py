@@ -9,8 +9,11 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('productos', '0002_alter_producto_options'),
         ('clientes', '0001_initial'),
+        ('productos', '0001_initial'),
+        ('productos', '0002_alter_producto_options'),
+        ('categorias', '0001_initial'),
+        ('usuarios', '0001_initial'),
     ]
 
     operations = [
