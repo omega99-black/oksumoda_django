@@ -19,7 +19,7 @@ class Cliente(models.Model):
 
     class Meta:
         db_table = 'clientes'
-        managed = False
+        managed = True
 
     def __str__(self):
         return f'{self.nombre} ({self.email})'
