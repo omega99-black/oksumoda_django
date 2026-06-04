@@ -1,4 +1,4 @@
-# Entorno virtual — se regenera con requirements.txt
+# Entorno virtual
 venv/
 
 # Caché de Python
@@ -6,7 +6,19 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-*.pycache
+
+# Base de datos local
+*.sqlite3
+
+# Variables de entorno
+.env
+
+# Archivos estáticos generados
+staticfiles/
 
 # Extensiones de VS Code
+.vscode/
 .extension/
+
+# Media (imágenes subidas)
+# media/   ← déjalo comentado para que las fotos SÍ suban a GitHub
