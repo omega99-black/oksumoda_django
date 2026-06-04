@@ -1,5 +1,6 @@
 """
 Django settings para el proyecto Oksumoda.
+Configurado para funcionar en local (SQLite) y en Railway (PostgreSQL).
 """
 
 from pathlib import Path
@@ -13,7 +14,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ──────────────────────────────────────────────
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-cambia-esto-en-produccion')
 DEBUG = config('DEBUG', default=True, cast=bool)
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
+
 CSRF_TRUSTED_ORIGINS = [
     'https://*.up.railway.app',
     'http://localhost:8000',
@@ -88,12 +90,14 @@ WSGI_APPLICATION = 'oksumoda.wsgi.application'
 
 # ──────────────────────────────────────────────
 # BASE DE DATOS
+# En local usa SQLite (si no hay DATABASE_URL en .env).
+# En Railway usa PostgreSQL (Railway inyecta DATABASE_URL automáticamente).
 # ──────────────────────────────────────────────
 DATABASES = {
-    'default': config(
-        'DATABASE_URL',
+    'default': dj_database_url.config(
         default=f'sqlite:///{BASE_DIR}/db.sqlite3',
-        cast=dj_database_url.parse
+        conn_max_age=600,
+        ssl_require=config('DB_SSL', default=False, cast=bool),
     )
 }
 
@@ -136,7 +140,7 @@ USE_I18N = True
 USE_TZ = True
 
 # ──────────────────────────────────────────────
-# ARCHIVOS ESTÁTICOS
+# ARCHIVOS ESTÁTICOS (CSS, JS, imágenes del sitio)
 # ──────────────────────────────────────────────
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
@@ -144,13 +148,19 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # ──────────────────────────────────────────────
-# ARCHIVOS MEDIA (imágenes subidas de productos)
+# ARCHIVOS MEDIA (fotos de productos subidas)
+# ADVERTENCIA: En Railway el filesystem es efímero.
+# Las imágenes se pierden al reiniciar el servidor.
+# Solución: usar Cloudinary (ver instrucciones en README).
 # ──────────────────────────────────────────────
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# ──────────────────────────────────────────────
+# CONTRASEÑAS — soporte BCrypt (contraseñas existentes)
+# ──────────────────────────────────────────────
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
