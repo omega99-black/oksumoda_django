@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'productos',
-                'managed': False,
+                'managed': True,
             },
         ),
     ]

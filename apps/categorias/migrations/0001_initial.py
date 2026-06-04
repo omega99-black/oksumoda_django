@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'categorias',
-                'managed': False,
+                'managed': True,
             },
         ),
     ]
