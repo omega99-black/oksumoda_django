@@ -25,3 +25,6 @@ media/
 
 # Backups de base de datos
 *.sql
+
+# Scripts con credenciales
+subir_imagenes.py
