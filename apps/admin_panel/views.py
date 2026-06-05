@@ -439,17 +439,21 @@ def guardar_producto(request):
 
         archivo = request.FILES.get('foto_archivo')
         if archivo:
-            carpeta = os.path.join(settings.MEDIA_ROOT, 'productos')
-            os.makedirs(carpeta, exist_ok=True)
-            ruta = os.path.join(carpeta, archivo.name)
-            with open(ruta, 'wb+') as destino:
-                for chunk in archivo.chunks():
-                    destino.write(chunk)
-            producto.foto = archivo.name
+            import cloudinary.uploader
+            resultado = cloudinary.uploader.upload(
+                archivo,
+                folder='oksumoda/productos',
+                overwrite=True,
+                resource_type='image',
+            )
+            producto.foto = resultado['secure_url']
         else:
             foto_existente = request.POST.get('foto', '')
             if foto_existente:
                 producto.foto = foto_existente
+                
+        producto.save()
+        return redirect('/admin/dashboard/?view=productos')
 
         producto.save()
         return redirect('/admin/dashboard/?view=productos')
