@@ -20,5 +20,8 @@ staticfiles/
 .vscode/
 .extension/
 
-# Media (imágenes subidas)
-# media/   ← déjalo comentado para que las fotos SÍ suban a GitHub
+# Media (imágenes subidas — ahora en Cloudinary)
+media/
+
+# Backups de base de datos
+*.sql

@@ -120,7 +120,7 @@
               <span class="etiqueta-descuento">OFERTA</span>
             {% endif %}
             {% if producto.foto %}
-              <img src="/media/productos/{{ producto.foto }}" alt="{{ producto.nombre }}" class="img-principal">
+              <img src="{{ producto.foto }}" alt="{{ producto.nombre }}" class="img-principal">
             {% else %}
               <img src="{% static 'imagenes/sin-imagen.jpg' %}" alt="{{ producto.nombre }}" class="img-principal">
             {% endif %}

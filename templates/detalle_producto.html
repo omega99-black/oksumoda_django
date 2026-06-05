@@ -273,7 +273,7 @@
       <!-- Imagen -->
       <div class="detalle-imagen">
         {% if producto.foto %}
-          <img src="/media/productos/{{ producto.foto }}" alt="{{ producto.nombre }}">
+          <img src="{{ producto.foto }}" alt="{{ producto.nombre }}">
         {% else %}
           <img src="{% static 'imagenes/sin-imagen.jpg' %}" alt="{{ producto.nombre }}">
         {% endif %}
