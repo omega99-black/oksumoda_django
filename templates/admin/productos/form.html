@@ -15,7 +15,7 @@
         {% endif %}
     </h2>
 
-    <form action="{% url 'admin_productos_guardar' %}" method="post" class="crud-form">
+    <form action="{% url 'admin_productos_guardar' %}" method="post" enctype="multipart/form-data" class="crud-form">
         {% csrf_token %}
 
         {% if producto.id_producto %}
@@ -43,8 +43,14 @@
         </div>
 
         <div class="form-group">
-            <label for="foto">URL de la Foto:</label>
-            <input type="text" id="foto" name="foto" value="{{ producto.foto|default:'' }}">
+            <label for="foto_archivo">Foto del Producto:</label>
+            <input type="file" id="foto_archivo" name="foto_archivo" accept="image/*">
+            {% if producto.foto %}
+                <br>
+                <small>Imagen actual:</small><br>
+                <img src="{{ producto.foto }}" style="max-width:150px; margin-top:8px;">
+                <input type="hidden" name="foto" value="{{ producto.foto }}">
+            {% endif %}
         </div>
 
         <div class="form-group">
@@ -55,9 +61,6 @@
             </select>
         </div>
 
-        <!-- ══════════════════════════════════════════ -->
-        <!-- CATEGORÍA                                  -->
-        <!-- ══════════════════════════════════════════ -->
         <div class="form-group">
             <label for="categoria">Categoría:</label>
             <select id="categoria" name="categoria" onchange="actualizarSubcategorias()">
@@ -69,9 +72,6 @@
             </select>
         </div>
 
-        <!-- ══════════════════════════════════════════ -->
-        <!-- SUBCATEGORÍA — dropdown dinámico          -->
-        <!-- ══════════════════════════════════════════ -->
         <div class="form-group">
             <label for="subcategoria">Subcategoría:</label>
             <select id="subcategoria" name="subcategoria">
@@ -109,7 +109,6 @@
 </div>
 
 <script>
-    // ─── Subcategorías por categoría ──────────────────────────────────────────
     const subcategoriasMap = {
         'Hombres': ['Camisetas', 'Pantalones', 'Chaquetas', 'Zapatos', 'Accesorios', 'Ropa Interior', 'Deportivo'],
         'Mujeres': ['Blusas', 'Vestidos', 'Faldas', 'Pantalones', 'Chaquetas', 'Zapatos', 'Accesorios', 'Ropa Interior'],
@@ -117,7 +116,6 @@
         'Otros':   ['Hogar', 'Mascotas', 'Deporte', 'Tecnología', 'Regalos', 'Temporada']
     };
 
-    // Valor guardado en BD (para modo editar) — Django lo inyecta al renderizar
     const subcategoriaGuardada = "{{ producto.subcategoria|default:''|escapejs }}";
 
     function actualizarSubcategorias() {
@@ -133,7 +131,6 @@
             return;
         }
 
-        // Opción vacía inicial
         const empty = document.createElement('option');
         empty.value = '';
         empty.textContent = '-- Selecciona una subcategoría --';
@@ -143,13 +140,11 @@
             const opt = document.createElement('option');
             opt.value = sub;
             opt.textContent = sub;
-            // Re-selecciona el valor guardado en BD (modo editar)
             if (sub === subcategoriaGuardada) opt.selected = true;
             subSelect.appendChild(opt);
         });
     }
 
-    // Al cargar la página: si ya hay categoría (modo editar), rellenar subcategorías
     document.addEventListener('DOMContentLoaded', actualizarSubcategorias);
 </script>
 
