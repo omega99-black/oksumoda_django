@@ -483,7 +483,7 @@
           <td>{{ p.id_producto }}</td>
           <td>
             {% if p.foto %}
-              <img src="/media/productos/{{ p.foto }}" alt="{{ p.nombre }}" style="width:40px;height:40px;object-fit:cover;border:1px solid #eee;">
+            <img src="{{ p.foto }}" alt="{{ p.nombre }}" style="width:40px;height:40px;object-fit:cover;border:1px solid #eee;">
             {% else %}
               <span style="color:#ccc;font-size:11px;">Sin foto</span>
             {% endif %}
@@ -571,7 +571,7 @@
           {% if producto.foto %}
           <div class="foto-actual" id="fotoActual">
             <p>Imagen actual:</p>
-            <img src="/media/productos/{{ producto.foto }}" alt="{{ producto.nombre }}">
+            <img src="{{ producto.foto }}" alt="{{ producto.nombre }}">
             <input type="hidden" name="foto" value="{{ producto.foto }}">
           </div>
           {% endif %}
