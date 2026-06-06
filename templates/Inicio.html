@@ -3,6 +3,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Oksu Moda</title>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/inicio.css' %}">
@@ -11,13 +12,8 @@
 </head>
 <body>
 
-  <!-- ══════════════════════════════════════════
-       BARRA SUPERIOR FIJA
-  ══════════════════════════════════════════ -->
   <header class="barra-superior">
     <div class="barra-inner">
-
-      <!-- Izquierda: admin + saludo -->
       <div class="barra-izq">
         {% if request.user.is_authenticated and request.user.es_admin %}
           <a href="/admin/dashboard/" class="btn-admin" title="Panel de Control">
@@ -26,13 +22,13 @@
         {% endif %}
         {% if request.user.is_authenticated %}
           <span class="saludo">Hola, <strong>{{ request.user.nombre }}</strong></span>
+        {% else %}
+          <div class="ticker-movil">
+            <span>✦ Envíos gratis desde $150.000 &nbsp;&nbsp;&nbsp; ✦ Devoluciones en 30 días &nbsp;&nbsp;&nbsp; ✦ Pago seguro garantizado &nbsp;&nbsp;&nbsp;</span>
+          </div>
         {% endif %}
       </div>
-
-      <!-- Centro: texto envío -->
       <span class="texto-envio">✦ Envíos gratis desde $150.000 ✦</span>
-
-      <!-- Derecha: iconos -->
       <div class="barra-der">
         <label for="search-input" class="icono-barra" title="Buscar">
           <i class="fas fa-search"></i>
@@ -50,10 +46,11 @@
     </div>
   </header>
 
+  <!-- Banda roja de envíos — solo visible en móvil -->
+  <div class="banda-envios-movil">
+  ✦ Envíos gratis desde $150.000 ✦
+  </div>
 
-  <!-- ══════════════════════════════════════════
-       NAVBAR
-  ══════════════════════════════════════════ -->
   <nav class="navbar">
     <a href="/" class="logo">
       <img src="{% static 'imágenes/v290_388.png' %}" alt="Logo">
@@ -78,34 +75,35 @@
         </form>
       {% endif %}
     </div>
+
+    <button class="btn-hamburguesa" id="btnHamburguesa" aria-label="Menú">
+      <i class="fas fa-bars"></i>
+    </button>
   </nav>
 
   <hr class="linea-nav">
 
+  <!-- Menú móvil -->
+  <div class="menu-movil" id="menuMovil">
+    <a href="/hombres/">Hombres</a>
+    <a href="/mujeres/">Mujeres</a>
+    <a href="/ninos/">Niños</a>
+    <a href="/otros/">Otros</a>
+  </div>
 
-  <!-- ══════════════════════════════════════════
-       HERO PRINCIPAL
-  ══════════════════════════════════════════ -->
   <main class="hero">
-
-    <!-- Galería de imágenes collage -->
     <div class="hero-galeria">
-
       <div class="galeria-item g3" style="background-image:url('{% static 'imágenes/v290_404.png' %}')"></div>
       <div class="galeria-item g7" style="background-image:url('{% static 'imágenes/v290_399.png' %}')"></div>
-
       <div class="col-centro">
         <div class="g2" style="background-image:url('{% static 'imágenes/v290_398.png' %}')"></div>
         <div class="g5" style="background-image:url('{% static 'imágenes/v290_402.png' %}')"></div>
         <div class="g4" style="background-image:url('{% static 'imágenes/v290_400.png' %}')"></div>
       </div>
-
       <div class="galeria-item g1" style="background-image:url('{% static 'imágenes/v290_408.png' %}')"></div>
       <div class="galeria-item g6" style="background-image:url('{% static 'imágenes/v290_406.png' %}')"></div>
-
     </div>
 
-    <!-- Contenido textual -->
     <div class="hero-contenido">
       <p class="hero-tag">— Nueva temporada</p>
       <h1 class="hero-titulo">
@@ -130,90 +128,53 @@
       </div>
     </div>
 
-    <!-- Indicador scroll -->
     <div class="scroll-hint">
       <span>Explorar</span>
       <i class="fas fa-chevron-down"></i>
     </div>
   </main>
 
-
-  <!-- ══════════════════════════════════════════
-       SECCIÓN CATEGORÍAS
-  ══════════════════════════════════════════ -->
   <section class="seccion-categorias">
     <h2 class="seccion-titulo">Compra por categoría</h2>
     <div class="grid-categorias">
       <a href="/hombres/" class="card-categoria">
         <div class="card-cat-img" style="background-image:url('{% static 'imágenes/v290_399.png' %}')"></div>
-        <div class="card-cat-info">
-          <span>Hombres</span>
-          <i class="fas fa-arrow-right"></i>
-        </div>
+        <div class="card-cat-info"><span>Hombres</span><i class="fas fa-arrow-right"></i></div>
       </a>
       <a href="/mujeres/" class="card-categoria">
         <div class="card-cat-img" style="background-image:url('{% static 'imágenes/v290_404.png' %}')"></div>
-        <div class="card-cat-info">
-          <span>Mujeres</span>
-          <i class="fas fa-arrow-right"></i>
-        </div>
+        <div class="card-cat-info"><span>Mujeres</span><i class="fas fa-arrow-right"></i></div>
       </a>
       <a href="/ninos/" class="card-categoria">
         <div class="card-cat-img" style="background-image:url('{% static 'imágenes/v290_402.png' %}')"></div>
-        <div class="card-cat-info">
-          <span>Niños</span>
-          <i class="fas fa-arrow-right"></i>
-        </div>
+        <div class="card-cat-info"><span>Niños</span><i class="fas fa-arrow-right"></i></div>
       </a>
       <a href="/otros/" class="card-categoria">
         <div class="card-cat-img" style="background-image:url('{% static 'imágenes/v290_398.png' %}')"></div>
-        <div class="card-cat-info">
-          <span>Otros</span>
-          <i class="fas fa-arrow-right"></i>
-        </div>
+        <div class="card-cat-info"><span>Otros</span><i class="fas fa-arrow-right"></i></div>
       </a>
     </div>
   </section>
 
-
-  <!-- ══════════════════════════════════════════
-       BANNER ENVÍOS
-  ══════════════════════════════════════════ -->
   <section class="banner-envios">
     <div class="banner-item">
       <i class="fas fa-truck"></i>
-      <div>
-        <strong>Envío gratis</strong>
-        <p>En compras desde $150.000</p>
-      </div>
+      <div><strong>Envío gratis</strong><p>En compras desde $150.000</p></div>
     </div>
     <div class="banner-item">
       <i class="fas fa-undo"></i>
-      <div>
-        <strong>Devoluciones fáciles</strong>
-        <p>30 días sin preguntas</p>
-      </div>
+      <div><strong>Devoluciones fáciles</strong><p>30 días sin preguntas</p></div>
     </div>
     <div class="banner-item">
       <i class="fas fa-lock"></i>
-      <div>
-        <strong>Pago seguro</strong>
-        <p>Tus datos siempre protegidos</p>
-      </div>
+      <div><strong>Pago seguro</strong><p>Tus datos siempre protegidos</p></div>
     </div>
     <div class="banner-item">
       <i class="fas fa-headset"></i>
-      <div>
-        <strong>Soporte 24/7</strong>
-        <p>Estamos para ayudarte</p>
-      </div>
+      <div><strong>Soporte 24/7</strong><p>Estamos para ayudarte</p></div>
     </div>
   </section>
 
-
-  <!-- ══════════════════════════════════════════
-       FOOTER
-  ══════════════════════════════════════════ -->
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-col">
@@ -246,17 +207,14 @@
     </div>
   </footer>
 
-
   <script>
-    /* ── Búsqueda ─────────────────────────────── */
+    /* ── Búsqueda ── */
     const searchLabel = document.querySelector('label[for="search-input"]');
     const searchInput = document.getElementById('search-input');
-
     searchLabel.addEventListener('click', () => {
       const visible = searchInput.classList.toggle('visible');
       if (visible) searchInput.focus();
     });
-
     function buscarProducto(e) {
       if (e.key === 'Enter') {
         const q = searchInput.value.trim();
@@ -264,13 +222,22 @@
       }
     }
 
-    /* ── Animación de entrada al hacer scroll ─── */
+    /* ── Menú hamburguesa ── */
+    const btnHamburguesa = document.getElementById('btnHamburguesa');
+    const menuMovil = document.getElementById('menuMovil');
+    btnHamburguesa.addEventListener('click', () => {
+      menuMovil.classList.toggle('abierto');
+      btnHamburguesa.innerHTML = menuMovil.classList.contains('abierto')
+        ? '<i class="fas fa-times"></i>'
+        : '<i class="fas fa-bars"></i>';
+    });
+
+    /* ── Animación scroll ── */
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, { threshold: 0.15 });
-
     document.querySelectorAll('.card-categoria, .banner-item').forEach(el => observer.observe(el));
   </script>
 </body>

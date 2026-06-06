@@ -3,7 +3,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Hombres - Oksumoda</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hombres - Oksu Moda</title>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/hombres.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -22,11 +23,13 @@
         {% endif %}
         {% if request.user.is_authenticated %}
           <span class="saludo">Hola, <strong>{{ request.user.nombre }}</strong></span>
+        {% else %}
+          <div class="ticker-movil">
+            <span>✦ Envíos gratis desde $150.000 &nbsp;&nbsp;&nbsp; ✦ Devoluciones en 30 días &nbsp;&nbsp;&nbsp; ✦ Pago seguro garantizado &nbsp;&nbsp;&nbsp;</span>
+          </div>
         {% endif %}
       </div>
-
       <span class="texto-envio">✦ Envíos gratis desde $150.000 ✦</span>
-
       <div class="barra-der">
         <label for="search-input" class="icono-barra" title="Buscar">
           <i class="fas fa-search"></i>
@@ -43,6 +46,11 @@
       </div>
     </div>
   </header>
+
+  <!-- Banda roja de envíos — solo visible en móvil -->
+  <div class="banda-envios-movil">
+  ✦ Envíos gratis desde $150.000 ✦
+  </div>
 
   <!-- ══ NAVBAR ══ -->
   <nav class="navbar">
@@ -67,14 +75,24 @@
         </form>
       {% endif %}
     </div>
+    <button class="btn-hamburguesa" id="btnHamburguesa" aria-label="Menú">
+      <i class="fas fa-bars"></i>
+    </button>
   </nav>
 
   <hr class="linea-nav">
 
+  <!-- ══ MENÚ MÓVIL ══ -->
+  <div class="menu-movil" id="menuMovil">
+    <a href="/hombres/">Hombres</a>
+    <a href="/mujeres/">Mujeres</a>
+    <a href="/ninos/">Niños</a>
+    <a href="/otros/">Otros</a>
+  </div>
+
   <!-- ══ CONTENIDO PRINCIPAL ══ -->
   <main class="pagina-contenido">
 
-    <!-- Hero de categoría -->
     <section class="hero-categoria">
       <div class="hero-cat-inner">
         <p class="hero-cat-tag">— Colección</p>
@@ -83,7 +101,6 @@
       </div>
     </section>
 
-    <!-- Filtros -->
     <section class="seccion-filtros">
       <div class="contenedor-filtros">
         <div class="grupo-filtros">
@@ -106,7 +123,6 @@
       </div>
     </section>
 
-    <!-- Grid de productos -->
     <section class="seccion-productos">
       <div class="grid-productos" id="grid-productos">
         {% for producto in productos %}
@@ -152,15 +168,14 @@
             <div class="colores-disponibles">
               {% for color in producto.get_colores_list %}
                 <span class="color-muestra" title="{{ color }}"
-                  style="background:{% if color == 'Negro' %}#1a1a1a{% elif color == 'Blanco' %}#ffffff{% elif color == 'Azul' %}#2c5aa0{% elif color == 'Rojo' %}#c41e3a{% elif color == 'Gris' %}#4a4a4a{% elif color == 'Café' %}#8b4513{% else %}#888{% endif %};
-                  {% if color == 'Blanco' %}border:1px solid #ddd;{% endif %}">
+                  style="background:{% if color == 'Negro' %}#1a1a1a{% elif color == 'Blanco' %}#ffffff{% elif color == 'Azul' %}#2c5aa0{% elif color == 'Rojo' %}#c41e3a{% elif color == 'Gris' %}#4a4a4a{% elif color == 'Café' %}#8b4513{% else %}#888{% endif %};{% if color == 'Blanco' %}border:1px solid #ddd;{% endif %}">
                 </span>
               {% endfor %}
             </div>
           </div>
         </div>
         {% empty %}
-          <p style="color:#999; grid-column: 1/-1; text-align:center; padding: 40px;">No hay productos disponibles.</p>
+          <p style="color:#999;grid-column:1/-1;text-align:center;padding:40px;">No hay productos disponibles.</p>
         {% endfor %}
       </div>
     </section>
@@ -221,7 +236,17 @@
       }
     }
 
-    /* ── Filtro subcategorías ── */
+    /* ── Menú hamburguesa ── */
+    const btnHamburguesa = document.getElementById('btnHamburguesa');
+    const menuMovil = document.getElementById('menuMovil');
+    btnHamburguesa.addEventListener('click', () => {
+      menuMovil.classList.toggle('abierto');
+      btnHamburguesa.innerHTML = menuMovil.classList.contains('abierto')
+        ? '<i class="fas fa-times"></i>'
+        : '<i class="fas fa-bars"></i>';
+    });
+
+    /* ── Filtros ── */
     document.querySelectorAll('.btn-filtro').forEach(btn => {
       btn.addEventListener('click', function () {
         document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('active'));
@@ -245,8 +270,7 @@
         const iB = parseFloat(b.dataset.id || 0);
         if (valor === 'precio-asc')  return pA - pB;
         if (valor === 'precio-desc') return pB - pA;
-        if (valor === 'reciente')    return iB - iA;
-        return 0;
+        return iB - iA;
       });
       tarjetas.forEach(t => grid.appendChild(t));
     });
@@ -265,7 +289,9 @@
           if (data.success) {
             document.querySelector('.badge-carrito').textContent = data.cantidadItems;
             alert('✅ ' + data.message);
-          } else { alert('❌ ' + data.message); }
+          } else {
+            alert('❌ ' + data.message);
+          }
         });
       });
     });
