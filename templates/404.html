@@ -1,35 +1,49 @@
-{% load static %}<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Error 404</title>
-  <link href="https://fonts.googleapis.com/css?family=Instrument+Sans&display=swap" rel="stylesheet" />
-  <link href="./css - error404/error404.css" rel="stylesheet" />
-  <link rel="stylesheet" type="text/css" th:href="@{/css/404.css}">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%; height: 100%;
+      font-family: 'Instrument Sans', sans-serif;
+      background: #000;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .contenedor {
+      width: 100vw; height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 2rem; position: relative;
+    }
+    .fondo {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: url("/static/imágenes/v157_264.png") no-repeat center center;
+      background-size: cover;
+      opacity: 0.3;
+    }
+    .codigo   { color: #fff; font-weight: 600; font-size: 1.5rem; z-index: 2; }
+    .titulo   { color: #fff; font-weight: 600; font-size: 6vw; margin-top: 2rem; z-index: 2; }
+    .subtitulo{ color: #fff; font-weight: 600; font-size: 2vw; max-width: 80%; margin-top: 2rem; z-index: 2; }
+    .volver   {
+      margin-top: 8rem; color: #fff; font-weight: 600; font-size: 1.5rem;
+      text-decoration: none; z-index: 2; display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .volver:hover { color: #EB0029; }
+  </style>
 </head>
-
 <body>
-  <div class="v103_126">
-
-    <div class="v157_264"></div>
-
-    <span class="v157_266">404</span>
-    <span class="v157_271">Página no encontrada</span>
-    <span class="v188_221">
-      Lo sentimos, no pudimos encontrar la página que estás buscando.
-    </span>
-    <a th:href="@{/}" class="volver-inicio">
-      <span class="flecha">&#8592;</span> Volver a la página de inicio
-    </a>
-    <div class="v188_229">
-      <div class="name"></div>
-    </div>
-
-    <div class="name"></div>
-
+  <div class="contenedor">
+    <div class="fondo"></div>
+    <span class="codigo">404</span>
+    <span class="titulo">Página no encontrada</span>
+    <span class="subtitulo">Lo sentimos, no pudimos encontrar la página que estás buscando.</span>
+    <a href="/" class="volver">&#8592; Volver a la página de inicio</a>
   </div>
 </body>
-
 </html>

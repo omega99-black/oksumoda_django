@@ -141,11 +141,17 @@ USE_TZ = True
 
 # ──────────────────────────────────────────────
 # ARCHIVOS ESTÁTICOS (CSS, JS, imágenes del sitio)
+# - Local (DEBUG=True):  sirve directo desde static/, sin caché
+# - Railway (DEBUG=False): WhiteNoise comprime y cachea para producción
 # ──────────────────────────────────────────────
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+if DEBUG:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ──────────────────────────────────────────────
 # ARCHIVOS MEDIA (fotos de productos subidas)

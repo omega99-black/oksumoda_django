@@ -9,32 +9,46 @@
   <link rel="stylesheet" href="{% static 'css/hombres.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-</head>
+  </head>
 <body>
-
   <header class="barra-superior">
     <div class="barra-inner">
       <div class="barra-izq">
         {% if request.user.is_authenticated and request.user.es_admin %}
-          <a href="/admin/dashboard/" class="btn-admin"><i class="bi bi-clipboard-fill"></i></a>
+          <a href="/admin/dashboard/" class="btn-admin" title="Panel de Control">
+            <i class="bi bi-clipboard-fill"></i>
+          </a>
         {% endif %}
         {% if request.user.is_authenticated %}
           <span class="saludo">Hola, <strong>{{ request.user.nombre }}</strong></span>
+        {% else %}
+          <div class="ticker-movil">
+            <span>✦ Devoluciones en 30 días &nbsp;&nbsp;&nbsp; ✦ Pago seguro garantizado &nbsp;&nbsp;&nbsp;</span>
+          </div>
         {% endif %}
       </div>
       <span class="texto-envio">✦ Envíos gratis desde $150.000 ✦</span>
       <div class="barra-der">
-        <label for="search-input" class="icono-barra"><i class="fas fa-search"></i></label>
+        <label for="search-input" class="icono-barra" title="Buscar">
+          <i class="fas fa-search"></i>
+        </label>
         <input id="search-input" type="text" placeholder="Buscar productos..." onkeydown="buscarProducto(event)">
-        <a href="/contactanos/" class="icono-barra"><i class="fas fa-user"></i></a>
+        <a href="/contactanos/" class="icono-barra" title="Mi cuenta">
+          <i class="fas fa-user"></i>
+        </a>
         <div class="separador-barra"></div>
-        <a href="/carrito/" class="icono-barra carrito-wrap">
+        <a href="/carrito/" class="icono-barra carrito-wrap" title="Carrito">
           <i class="fas fa-shopping-bag"></i>
           <span class="badge-carrito">{{ cantidadItems }}</span>
         </a>
       </div>
     </div>
   </header>
+
+  <!-- Banda roja de envíos — solo visible en móvil -->
+  <div class="banda-envios-movil">
+  ✦ Envíos gratis desde $150.000 ✦
+  </div>
 
   <nav class="navbar">
     <a href="/" class="logo"><img src="{% static 'imágenes/v290_388.png' %}" alt="Logo"></a>
@@ -56,9 +70,18 @@
         </form>
       {% endif %}
     </div>
+    <button class="btn-hamburguesa" id="btnHamburguesa" aria-label="Menú">
+      <i class="fas fa-bars"></i>
+    </button>
   </nav>
   <hr class="linea-nav">
-
+<!-- ══ MENÚ MÓVIL ══ -->
+  <div class="menu-movil" id="menuMovil">
+    <a href="/hombres/">Hombres</a>
+    <a href="/mujeres/">Mujeres</a>
+    <a href="/ninos/">Niños</a>
+    <a href="/otros/">Otros</a>
+  </div>
   <main class="pagina-contenido">
     <section class="hero-categoria">
       <div class="hero-cat-inner">
@@ -150,6 +173,16 @@
     const searchInput = document.getElementById('search-input');
     searchLabel.addEventListener('click', () => { const v = searchInput.classList.toggle('visible'); if (v) searchInput.focus(); });
     function buscarProducto(e) { if (e.key === 'Enter') { const q = searchInput.value.trim(); if (q) window.location.href = '/buscar/?q=' + encodeURIComponent(q); } }
+
+        /* ── Menú hamburguesa ── */
+    const btnHamburguesa = document.getElementById('btnHamburguesa');
+    const menuMovil = document.getElementById('menuMovil');
+    btnHamburguesa.addEventListener('click', () => {
+      menuMovil.classList.toggle('abierto');
+      btnHamburguesa.innerHTML = menuMovil.classList.contains('abierto')
+        ? '<i class="fas fa-times"></i>'
+        : '<i class="fas fa-bars"></i>';
+    });
 
     document.querySelectorAll('.btn-filtro').forEach(btn => {
       btn.addEventListener('click', function () {

@@ -96,3 +96,10 @@ def registro_view(request):
                 error = f'Error al crear la cuenta: {str(e)}'
 
     return render(request, 'registro.html', {'error': error})
+# ── Error 404 ──────────────────────────────────────────────────────────────
+def error_404(request, exception):
+    return render(request, '404.html', status=404)
+
+# ── Error 403 ──────────────────────────────────────────────────────────────
+def error_403(request, exception):
+    return render(request, '403.html', status=403)

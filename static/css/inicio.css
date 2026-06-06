@@ -404,7 +404,7 @@ body {
   .ticker-movil {
   display: block;
   overflow: hidden;
-  width: 130px; /* ajusta según cuánto espacio queda */
+  width: 180px; /* ajusta según cuánto espacio queda */
   white-space: nowrap;
 }
 
@@ -431,6 +431,7 @@ body {
     display: flex;
     gap: 8px;
     margin-left: auto;
+    margin-right: 12px;
   }
   .link-auth { font-size: 0.8rem; }
   .link-auth--cta { padding: 6px 11px; font-size: 0.8rem; }
