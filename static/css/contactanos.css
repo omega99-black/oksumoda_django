@@ -32,7 +32,7 @@ body {
 .logo {
   width: 140px;
   height: 140px;
-  background: url("../imagenes/v261_250.png") no-repeat center center;
+  background: url("../imágenes/v261_250.png") no-repeat center center;
   background-size: cover;
   border-radius: 20px;
   margin: 0 auto 2rem auto;
