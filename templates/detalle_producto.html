@@ -4,13 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ producto.nombre }} - Oksumoda</title>
+  <title>{{ producto.nombre }} - Oksu Moda</title>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/hombres.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    /* ── DETALLE ── */
     .detalle-container {
       max-width: 1100px;
       margin: 0 auto;
@@ -20,189 +19,71 @@
       flex-wrap: wrap;
       align-items: flex-start;
     }
-
-    .detalle-imagen {
-      flex: 1;
-      min-width: 300px;
-    }
+    .detalle-imagen { flex: 1; min-width: 300px; }
     .detalle-imagen img {
-      width: 100%;
-      height: 620px;
-      object-fit: cover;
-      object-position: top center;
-      border-radius: 18px;
-      display: block;
+      width: 100%; height: 620px;
+      object-fit: cover; object-position: top center;
+      border-radius: 18px; display: block;
     }
-
-    .detalle-info {
-      flex: 1;
-      min-width: 300px;
-      padding-top: 10px;
-    }
-
+    .detalle-info { flex: 1; min-width: 300px; padding-top: 10px; }
     .btn-volver {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--gris);
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      background: none;
-      border: none;
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--gris); font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; background: none; border: none;
       font-family: 'Instrument Sans', sans-serif;
-      margin-bottom: 20px;
-      transition: color 0.2s;
-      padding: 0;
+      margin-bottom: 20px; transition: color 0.2s; padding: 0;
     }
     .btn-volver:hover { color: var(--negro); }
-
     .badge-nuevo {
-      background: var(--negro);
-      color: white;
-      padding: 4px 12px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 14px;
-      display: inline-block;
+      background: var(--negro); color: white;
+      padding: 4px 12px; border-radius: 4px;
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 1px; margin-bottom: 14px; display: inline-block;
     }
-
-    .detalle-nombre {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--negro);
-      margin-bottom: 6px;
-      line-height: 1.15;
-    }
-
-    .stock-info {
-      font-size: 0.83rem;
-      color: var(--gris);
-      margin-bottom: 20px;
-    }
-
-    .detalle-precio {
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    .precio-tachado {
-      text-decoration: line-through;
-      color: #bbb;
-      font-size: 1.1rem;
-    }
-    .precio-principal {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--rojo);
-    }
-
+    .detalle-nombre { font-size: 2rem; font-weight: 700; color: var(--negro); margin-bottom: 6px; line-height: 1.15; }
+    .stock-info { font-size: 0.83rem; color: var(--gris); margin-bottom: 20px; }
+    .detalle-precio { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; }
+    .precio-tachado { text-decoration: line-through; color: #bbb; font-size: 1.1rem; }
+    .precio-principal { font-size: 2rem; font-weight: 700; color: var(--rojo); }
     .detalle-descripcion {
-      font-size: 0.93rem;
-      color: #555;
-      line-height: 1.7;
-      margin-bottom: 28px;
-      border-top: 1px solid #f0f0f0;
-      padding-top: 20px;
+      font-size: 0.93rem; color: #555; line-height: 1.7;
+      margin-bottom: 28px; border-top: 1px solid #f0f0f0; padding-top: 20px;
     }
-
-    .opciones-label {
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--negro);
-      margin-bottom: 10px;
-      display: block;
-    }
-    .opciones-label span {
-      font-weight: 400;
-      color: var(--gris);
-    }
-
-    .opciones-grupo {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 22px;
-    }
-
+    .opciones-label { font-weight: 700; font-size: 0.9rem; color: var(--negro); margin-bottom: 10px; display: block; }
+    .opciones-label span { font-weight: 400; color: var(--gris); }
+    .opciones-grupo { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
     .opcion-btn {
-      padding: 9px 18px;
-      border: 1.5px solid #ddd;
-      background: white;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.88rem;
-      font-family: 'Instrument Sans', sans-serif;
-      font-weight: 600;
-      transition: all 0.2s;
-      color: var(--negro);
+      padding: 9px 18px; border: 1.5px solid #ddd; background: white;
+      border-radius: 8px; cursor: pointer; font-size: 0.88rem;
+      font-family: 'Instrument Sans', sans-serif; font-weight: 600;
+      transition: all 0.2s; color: var(--negro);
     }
     .opcion-btn:hover { border-color: var(--negro); }
-    .opcion-btn.activo {
-      border-color: var(--negro);
-      background: var(--negro);
-      color: white;
-    }
-
+    .opcion-btn.activo { border-color: var(--negro); background: var(--negro); color: white; }
     .cantidad-control {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      margin-bottom: 28px;
-      border: 1.5px solid #ddd;
-      border-radius: 10px;
-      overflow: hidden;
-      width: fit-content;
+      display: flex; align-items: center; gap: 0; margin-bottom: 28px;
+      border: 1.5px solid #ddd; border-radius: 10px; overflow: hidden; width: fit-content;
     }
     .cantidad-control button {
-      width: 44px;
-      height: 44px;
-      border: none;
-      background: #f8f8f8;
-      font-size: 1.2rem;
-      cursor: pointer;
-      font-family: 'Instrument Sans', sans-serif;
-      color: var(--negro);
-      transition: background 0.2s;
+      width: 44px; height: 44px; border: none; background: #f8f8f8;
+      font-size: 1.2rem; cursor: pointer;
+      font-family: 'Instrument Sans', sans-serif; color: var(--negro); transition: background 0.2s;
     }
     .cantidad-control button:hover { background: #eee; }
     .cantidad-control input {
-      width: 60px;
-      text-align: center;
-      border: none;
-      border-left: 1.5px solid #ddd;
-      border-right: 1.5px solid #ddd;
-      padding: 6px;
-      font-size: 1rem;
-      font-family: 'Instrument Sans', sans-serif;
-      font-weight: 600;
-      outline: none;
+      width: 60px; text-align: center;
+      border: none; border-left: 1.5px solid #ddd; border-right: 1.5px solid #ddd;
+      padding: 6px; font-size: 1rem;
+      font-family: 'Instrument Sans', sans-serif; font-weight: 600; outline: none;
     }
-
     .btn-agregar {
-      width: 100%;
-      padding: 16px;
-      background: var(--negro);
-      color: white;
-      border: none;
-      border-radius: 50px;
-      font-size: 1rem;
-      font-weight: 700;
-      font-family: 'Instrument Sans', sans-serif;
-      cursor: pointer;
+      width: 100%; padding: 16px; background: var(--negro); color: white;
+      border: none; border-radius: 50px; font-size: 1rem; font-weight: 700;
+      font-family: 'Instrument Sans', sans-serif; cursor: pointer;
       transition: background 0.2s, transform 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
     }
-    .btn-agregar:hover {
-      background: var(--rojo);
-      transform: translateY(-2px);
-    }
+    .btn-agregar:hover { background: var(--rojo); transform: translateY(-2px); }
   </style>
 </head>
 <body>
@@ -218,11 +99,13 @@
         {% endif %}
         {% if request.user.is_authenticated %}
           <span class="saludo">Hola, <strong>{{ request.user.nombre }}</strong></span>
+        {% else %}
+          <div class="ticker-movil">
+            <span>✦ Devoluciones en 30 días &nbsp;&nbsp;&nbsp; ✦ Pago seguro garantizado &nbsp;&nbsp;&nbsp;</span>
+          </div>
         {% endif %}
       </div>
-
       <span class="texto-envio">✦ Envíos gratis desde $150.000 ✦</span>
-
       <div class="barra-der">
         <label for="search-input" class="icono-barra" title="Buscar">
           <i class="fas fa-search"></i>
@@ -239,6 +122,9 @@
       </div>
     </div>
   </header>
+
+  <!-- Banda roja móvil -->
+  <div class="banda-envios-movil">✦ Envíos gratis desde $150.000 ✦</div>
 
   <!-- ══ NAVBAR ══ -->
   <nav class="navbar">
@@ -263,24 +149,35 @@
         </form>
       {% endif %}
     </div>
+    <button class="btn-hamburguesa" id="btnHamburguesa" aria-label="Menú">
+      <i class="fas fa-bars"></i>
+    </button>
   </nav>
 
   <hr class="linea-nav">
+
+  <!-- Menú móvil -->
+  <div class="menu-movil" id="menuMovil">
+    <a href="/hombres/">Hombres</a>
+    <a href="/mujeres/">Mujeres</a>
+    <a href="/ninos/">Niños</a>
+    <a href="/otros/">Otros</a>
+  </div>
 
   <!-- ══ CONTENIDO ══ -->
   <main class="pagina-contenido">
     <div class="detalle-container">
 
-      <!-- Imagen -->
       <div class="detalle-imagen">
         {% if producto.foto %}
           <img src="{{ producto.foto }}" alt="{{ producto.nombre }}">
         {% else %}
-          <img src="{% static 'imagenes/sin-imagen.jpg' %}" alt="{{ producto.nombre }}">
+          <div style="width:100%;height:620px;background:#f4f4f2;border-radius:18px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-image" style="font-size:4rem;color:#ccc;"></i>
+          </div>
         {% endif %}
       </div>
 
-      <!-- Info -->
       <div class="detalle-info">
         <button class="btn-volver" onclick="history.back()">
           <i class="fas fa-arrow-left"></i> Volver
@@ -384,6 +281,16 @@
         if (q) window.location.href = '/buscar/?q=' + encodeURIComponent(q);
       }
     }
+
+    /* ── Hamburguesa ── */
+    const btnHamburguesa = document.getElementById('btnHamburguesa');
+    const menuMovil = document.getElementById('menuMovil');
+    btnHamburguesa.addEventListener('click', () => {
+      menuMovil.classList.toggle('abierto');
+      btnHamburguesa.innerHTML = menuMovil.classList.contains('abierto')
+        ? '<i class="fas fa-times"></i>'
+        : '<i class="fas fa-bars"></i>';
+    });
 
     /* ── Tallas y colores ── */
     let tallaSeleccionada = '{{ tallas.0 }}';
