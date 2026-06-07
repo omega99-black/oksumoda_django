@@ -18,132 +18,34 @@ html, body { height: 100%; }
 
 body {
   font-family: 'Instrument Sans', sans-serif;
-  background: var(--blanco);
+  background: var(--gris-cl);
   color: var(--negro);
   overflow-x: hidden;
 }
 
 /* ════════════════════════════════════════════
-   LAYOUT  (visual a la izquierda, form a la derecha)
+   LAYOUT — centrado
 ════════════════════════════════════════════ */
 .page {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  min-height: 100vh;
-}
-
-/* ════════════════════════════════════════════
-   PANEL VISUAL — izquierdo
-════════════════════════════════════════════ */
-.panel-visual {
-  position: relative;
-  overflow: hidden;
-}
-
-.visual-bg {
-  position: absolute;
-  inset: 0;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  transform: scale(1.03);
-  transition: transform 8s ease;
-}
-.panel-visual:hover .visual-bg { transform: scale(1); }
-
-.visual-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    160deg,
-    rgba(15,15,15,0.6) 0%,
-    rgba(15,15,15,0.25) 50%,
-    rgba(235,0,41,0.15) 100%
-  );
-  z-index: 1;
-}
-
-.visual-content {
-  position: absolute;
-  bottom: 100px;
-  left: 52px;
-  right: 52px;
-  z-index: 2;
-  color: var(--blanco);
-  animation: fadeUp 0.8s ease 0.3s both;
-}
-
-.visual-badge {
-  display: inline-block;
-  background: rgba(255,255,255,0.14);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.22);
-  border-radius: 30px;
-  padding: 6px 16px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--blanco);
-  margin-bottom: 20px;
-}
-
-.visual-content h2 {
-  font-size: clamp(2rem, 3.2vw, 3rem);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.5px;
-  margin-bottom: 14px;
-}
-.visual-content h2 em {
-  font-style: normal;
-  color: var(--rojo);
-}
-.visual-content p {
-  font-size: 0.92rem;
-  color: rgba(255,255,255,0.7);
-  font-weight: 500;
-  letter-spacing: 0.3px;
-}
-
-/* ── Tarjeta flotante ── */
-.floating-card {
-  position: absolute;
-  top: 44px;
-  left: 44px;
-  z-index: 2;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.22);
-  border-radius: 16px;
-  padding: 14px 18px;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
-  animation: fadeDown 0.7s ease 0.5s both;
-  color: var(--blanco);
+  min-height: 100vh;
+  padding: 32px 16px;
 }
-.fc-icon {
-  width: 38px; height: 38px;
-  border-radius: 10px;
-  background: var(--rojo);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.95rem;
-  flex-shrink: 0;
-}
-.fc-text { display: flex; flex-direction: column; gap: 2px; }
-.fc-text strong { font-size: 0.88rem; font-weight: 700; }
-.fc-text span   { font-size: 0.76rem; opacity: 0.75; font-weight: 500; }
 
 /* ════════════════════════════════════════════
-   PANEL FORMULARIO — derecho
+   TARJETA FORMULARIO
 ════════════════════════════════════════════ */
 .panel-form {
   display: flex;
   flex-direction: column;
-  padding: 36px 48px 48px;
+  padding: 48px 52px 52px;
   background: var(--blanco);
+  border-radius: 24px;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.10);
+  width: 100%;
+  max-width: 460px;
   position: relative;
   overflow: hidden;
 }
@@ -175,7 +77,7 @@ body {
   text-decoration: none;
   color: var(--negro);
   width: fit-content;
-  margin-bottom: 8px;
+  margin-bottom: 32px;
   animation: fadeUp 0.5s ease both;
 }
 .brand img {
@@ -191,13 +93,8 @@ body {
 
 /* ── Form wrap ── */
 .form-wrap {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  max-width: 400px;
-  width: 100%;
-  margin: 0 auto;
   animation: fadeUp 0.6s ease 0.1s both;
 }
 
@@ -205,7 +102,7 @@ body {
   margin-bottom: 28px;
 }
 .form-header h1 {
-  font-size: 1.9rem;
+  font-size: 1.75rem;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.5px;
@@ -253,9 +150,7 @@ form { display: flex; flex-direction: column; gap: 14px; }
   letter-spacing: 0.1px;
 }
 
-.input-wrap {
-  position: relative;
-}
+.input-wrap { position: relative; }
 .input-icon {
   position: absolute;
   left: 14px;
@@ -417,23 +312,11 @@ form { display: flex; flex-direction: column; gap: 14px; }
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes fadeDown {
-  from { opacity: 0; transform: translateY(-16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
 
 /* ════════════════════════════════════════════
    RESPONSIVE
 ════════════════════════════════════════════ */
-@media (max-width: 900px) {
-  .page { grid-template-columns: 1fr; }
-  .panel-visual { display: none; }
-  .panel-form { padding: 32px 28px 48px; min-height: 100vh; }
-  .panel-form::before, .panel-form::after { display: none; }
-  .form-wrap { max-width: 100%; }
-}
-
-@media (max-width: 480px) {
-  .panel-form { padding: 24px 20px 40px; }
-  .form-header h1 { font-size: 1.6rem; }
+@media (max-width: 520px) {
+  .panel-form { padding: 36px 24px 40px; border-radius: 18px; }
+  .form-header h1 { font-size: 1.5rem; }
 }
