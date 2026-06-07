@@ -18,7 +18,13 @@ html, body { height: 100%; }
 
 body {
   font-family: 'Instrument Sans', sans-serif;
-  background: var(--gris-cl);
+  background-color: #0f0f0f;
+  background-image:
+    linear-gradient(rgba(235,0,41,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(235,0,41,0.04) 1px, transparent 1px),
+    radial-gradient(ellipse 80% 60% at 20% 50%, rgba(235,0,41,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 20%, rgba(235,0,41,0.07) 0%, transparent 55%);
+  background-size: 48px 48px, 48px 48px, 100% 100%, 100% 100%;
   color: var(--negro);
   overflow-x: hidden;
 }
@@ -43,7 +49,7 @@ body {
   padding: 48px 52px 52px;
   background: var(--blanco);
   border-radius: 24px;
-  box-shadow: 0 8px 48px rgba(0,0,0,0.10);
+  box-shadow: 0 20px 64px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.06);
   width: 100%;
   max-width: 460px;
   position: relative;
