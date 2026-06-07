@@ -9,64 +9,38 @@
   <link rel="stylesheet" href="{% static 'css/hombres.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
-  <style>
-    /* ── Barra superior fija ── */
-    .barra-superior {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      z-index: 1000;
-    }
-
-    /* ── Navbar fijo ── */
-    .navbar {
-      position: fixed;
-      top: 52px; left: 0;
-      width: 100%;
-      z-index: 999;
-      background: #ffffff;
-    }
-
-    .linea-nav {
-      position: fixed;
-      top: 116px; left: 3vw;
-      width: 94vw;
-      z-index: 998;
-    }
-
-    /* ── Compensar el espacio del header fijo ── */
-    .pagina-contenido {
-      padding-top: 120px;
-    }
-
-    /* ── Responsive: ajuste móvil ── */
-    @media (max-width: 768px) {
-      .navbar { top: 79px; }
-      .linea-nav { top: 135px; }
-      .pagina-contenido { padding-top: 140px; }
-    }
-  </style>
 </head>
 <body>
 
+  <!-- ══ BARRA SUPERIOR ══ -->
   <header class="barra-superior">
     <div class="barra-inner">
       <div class="barra-izq">
         {% if request.user.is_authenticated and request.user.es_admin %}
-          <a href="/admin/dashboard/" class="btn-admin"><i class="bi bi-clipboard-fill"></i></a>
+          <a href="/admin/dashboard/" class="btn-admin" title="Panel de Control">
+            <i class="bi bi-clipboard-fill"></i>
+          </a>
         {% endif %}
         {% if request.user.is_authenticated %}
           <span class="saludo">Hola, <strong>{{ request.user.nombre }}</strong></span>
+        {% else %}
+          <div class="ticker-movil">
+            <span>✦ Devoluciones en 30 días &nbsp;&nbsp;&nbsp; ✦ Pago seguro garantizado &nbsp;&nbsp;&nbsp;</span>
+          </div>
         {% endif %}
       </div>
       <span class="texto-envio">✦ Envíos gratis desde $150.000 ✦</span>
       <div class="barra-der">
-        <label for="search-input" class="icono-barra"><i class="fas fa-search"></i></label>
-        <input id="search-input" type="text" placeholder="Buscar productos..." value="{{ query }}" class="visible" onkeydown="buscarProducto(event)">
-        <a href="/contactanos/" class="icono-barra"><i class="fas fa-user"></i></a>
+        <label for="search-input" class="icono-barra" title="Buscar">
+          <i class="fas fa-search"></i>
+        </label>
+        <input id="search-input" type="text" placeholder="Buscar productos..."
+               value="{{ query }}" class="visible" onkeydown="buscarProducto(event)">
+        <a href="/contactanos/" class="icono-barra" title="Mi cuenta">
+          <i class="fas fa-user"></i>
+        </a>
         <div class="separador-barra"></div>
-        <a href="/carrito/" class="icono-barra carrito-wrap">
+        <a href="/carrito/" class="icono-barra carrito-wrap" title="Carrito">
           <i class="fas fa-shopping-bag"></i>
           <span class="badge-carrito">{{ cantidadItems }}</span>
         </a>
@@ -74,8 +48,16 @@
     </div>
   </header>
 
+  <!-- Banda roja de envíos — solo visible en móvil -->
+  <div class="banda-envios-movil">
+    ✦ Envíos gratis desde $150.000 ✦
+  </div>
+
+  <!-- ══ NAVBAR ══ -->
   <nav class="navbar">
-    <a href="/" class="logo"><img src="{% static 'imágenes/v290_388.png' %}" alt="Logo"></a>
+    <a href="/" class="logo">
+      <img src="{% static 'imágenes/v290_388.png' %}" alt="Logo">
+    </a>
     <div class="menu-nav">
       <a href="/hombres/" class="link-nav">Hombres</a>
       <a href="/mujeres/" class="link-nav">Mujeres</a>
@@ -84,7 +66,7 @@
     </div>
     <div class="auth-section">
       {% if not request.user.is_authenticated %}
-        <a href="/login/" class="link-auth">Iniciar sesión</a>
+        <a href="/login/"    class="link-auth">Iniciar sesión</a>
         <span class="sep-v"></span>
         <a href="/registro/" class="link-auth link-auth--cta">Crear cuenta</a>
       {% else %}
@@ -94,14 +76,30 @@
         </form>
       {% endif %}
     </div>
+    <button class="btn-hamburguesa" id="btnHamburguesa" aria-label="Menú">
+      <i class="fas fa-bars"></i>
+    </button>
   </nav>
+
   <hr class="linea-nav">
 
+  <!-- ══ MENÚ MÓVIL ══ -->
+  <div class="menu-movil" id="menuMovil">
+    <a href="/hombres/">Hombres</a>
+    <a href="/mujeres/">Mujeres</a>
+    <a href="/ninos/">Niños</a>
+    <a href="/otros/">Otros</a>
+  </div>
+
+  <!-- ══ CONTENIDO PRINCIPAL ══ -->
   <main class="pagina-contenido">
+
     <section class="hero-categoria">
       <div class="hero-cat-inner">
         <p class="hero-cat-tag">— Búsqueda</p>
-        <h1 class="hero-cat-titulo">{% if query %}"{{ query }}"{% else %}Buscar productos{% endif %}</h1>
+        <h1 class="hero-cat-titulo">
+          {% if query %}"{{ query }}"{% else %}Buscar productos{% endif %}
+        </h1>
         <p class="hero-cat-sub">
           {% if productos %}
             {{ productos|length }} producto{{ productos|length|pluralize }} encontrado{{ productos|length|pluralize }}
@@ -115,24 +113,32 @@
     <section class="seccion-productos">
       <div class="grid-productos">
         {% for producto in productos %}
-        <div class="tarjeta-producto">
+        <div class="tarjeta-producto"
+             data-subcategoria="{{ producto.subcategoria }}"
+             data-id="{{ producto.id_producto }}"
+             data-precio="{{ producto.precio }}">
           <div class="imagen-producto">
             {% if producto.es_nuevo %}<span class="etiqueta-nuevo">NUEVO</span>{% endif %}
-            {% if producto.precio_anterior and not producto.es_nuevo %}<span class="etiqueta-descuento">OFERTA</span>{% endif %}
+            {% if producto.precio_anterior and not producto.es_nuevo %}
+              <span class="etiqueta-descuento">OFERTA</span>
+            {% endif %}
             {% if producto.foto %}
               <img src="{{ producto.foto }}" alt="{{ producto.nombre }}" class="img-principal" onerror="this.style.display='none'">
             {% else %}
               <img src="{% static 'imágenes/sin-imagen.jpg' %}" alt="{{ producto.nombre }}" class="img-principal">
             {% endif %}
             <div class="acciones-rapidas">
-              <a href="/producto/{{ producto.id_producto }}/" class="btn-accion"><i class="fas fa-eye"></i></a>
+              <a href="/producto/{{ producto.id_producto }}/" class="btn-accion" title="Ver detalles">
+                <i class="fas fa-eye"></i>
+              </a>
               <button class="btn-accion btn-agregar-carrito"
-                data-id="{{ producto.id_producto }}"
-                data-talla="{{ producto.get_tallas_list.0 }}"
-                data-color="{{ producto.get_colores_list.0 }}">
+                      title="Agregar al carrito"
+                      data-id="{{ producto.id_producto }}"
+                      data-talla="{{ producto.get_tallas_list.0 }}"
+                      data-color="{{ producto.get_colores_list.0 }}">
                 <i class="fas fa-shopping-bag"></i>
               </button>
-              <button class="btn-accion"><i class="far fa-heart"></i></button>
+              <button class="btn-accion" title="Favorito"><i class="far fa-heart"></i></button>
             </div>
           </div>
           <div class="info-producto">
@@ -148,22 +154,24 @@
             </div>
             <div class="colores-disponibles">
               {% for color in producto.get_colores_list %}
-                <span class="color-muestra" title="{{ color }}" style="background:
-                  {% if color == 'Negro' %}#1a1a1a
-                  {% elif color == 'Blanco' %}#ffffff
-                  {% elif color == 'Azul' %}#2c5aa0
-                  {% elif color == 'Rojo' %}#c41e3a
-                  {% elif color == 'Gris' %}#4a4a4a
-                  {% elif color == 'Café' %}#8b4513
-                  {% elif color == 'Rosa' %}#ff69b4
-                  {% else %}#888
-                  {% endif %};
-                  {% if color == 'Blanco' %}border:1px solid #ddd;{% endif %}">
+                <span class="color-muestra" title="{{ color }}"
+                  style="background:
+                    {% if color == 'Negro' %}#1a1a1a
+                    {% elif color == 'Blanco' %}#ffffff
+                    {% elif color == 'Azul' %}#2c5aa0
+                    {% elif color == 'Rojo' %}#c41e3a
+                    {% elif color == 'Gris' %}#4a4a4a
+                    {% elif color == 'Café' %}#8b4513
+                    {% elif color == 'Rosa' %}#ff69b4
+                    {% else %}#888
+                    {% endif %};
+                    {% if color == 'Blanco' %}border:1px solid #ddd;{% endif %}">
                 </span>
               {% endfor %}
             </div>
           </div>
         </div>
+
         {% empty %}
           <div style="text-align:center;padding:60px 20px;grid-column:1/-1;">
             <i class="fas fa-search" style="font-size:50px;color:#ccc;margin-bottom:20px;display:block;"></i>
@@ -174,8 +182,10 @@
         {% endfor %}
       </div>
     </section>
+
   </main>
 
+  <!-- ══ FOOTER ══ -->
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-col">
@@ -209,13 +219,13 @@
   </footer>
 
   <script>
+    /* ── Búsqueda ── */
     const searchLabel = document.querySelector('label[for="search-input"]');
     const searchInput = document.getElementById('search-input');
     searchLabel.addEventListener('click', () => {
-      const v = searchInput.classList.toggle('visible');
-      if (v) searchInput.focus();
+      const visible = searchInput.classList.toggle('visible');
+      if (visible) searchInput.focus();
     });
-
     function buscarProducto(e) {
       if (e.key === 'Enter') {
         const q = searchInput.value.trim();
@@ -223,6 +233,17 @@
       }
     }
 
+    /* ── Menú hamburguesa ── */
+    const btnHamburguesa = document.getElementById('btnHamburguesa');
+    const menuMovil = document.getElementById('menuMovil');
+    btnHamburguesa.addEventListener('click', () => {
+      menuMovil.classList.toggle('abierto');
+      btnHamburguesa.innerHTML = menuMovil.classList.contains('abierto')
+        ? '<i class="fas fa-times"></i>'
+        : '<i class="fas fa-bars"></i>';
+    });
+
+    /* ── Agregar al carrito ── */
     document.querySelectorAll('.btn-agregar-carrito').forEach(btn => {
       btn.addEventListener('click', function (e) {
         e.preventDefault();
@@ -234,7 +255,7 @@
           },
           body: `productoId=${this.dataset.id}&cantidad=1&talla=${this.dataset.talla}&color=${this.dataset.color}`
         })
-        .then(r => r.json())
+        .then(res => res.json())
         .then(data => {
           if (data.success) {
             document.querySelector('.badge-carrito').textContent = data.cantidadItems;
