@@ -45,6 +45,10 @@
         {% endif %}
         {% if request.user.is_authenticated %}
           <span class="saludo">Hola, <strong>{{ request.user.nombre }}</strong></span>
+        {% else %}
+          <div class="ticker-movil">
+            <span>✦ Devoluciones en 30 días &nbsp;&nbsp;&nbsp; ✦ Pago seguro garantizado &nbsp;&nbsp;&nbsp;</span>
+          </div>
         {% endif %}
       </div>
       <span class="texto-envio">✦ Envíos gratis desde $150.000 ✦</span>
@@ -60,6 +64,8 @@
       </div>
     </div>
   </header>
+
+  <div class="banda-envios-movil">✦ Envíos gratis desde $150.000 ✦</div>
 
   <nav class="navbar">
     <a href="/" class="logo"><img src="{% static 'imágenes/v290_388.png' %}" alt="Logo"></a>
@@ -78,8 +84,19 @@
         <form action="/logout/" method="post">{% csrf_token %}<button type="submit" class="btn-logout">Cerrar sesión</button></form>
       {% endif %}
     </div>
+    <button class="btn-hamburguesa" id="btnHamburguesa" aria-label="Menú">
+      <i class="fas fa-bars"></i>
+    </button>
   </nav>
+
   <hr class="linea-nav">
+
+  <div class="menu-movil" id="menuMovil">
+    <a href="/hombres/">Hombres</a>
+    <a href="/mujeres/">Mujeres</a>
+    <a href="/ninos/">Niños</a>
+    <a href="/otros/">Otros</a>
+  </div>
 
   <main class="pagina-contenido">
     <div class="carrito-container">
@@ -159,11 +176,24 @@
 
   <script>
     const csrfToken = '{{ csrf_token }}';
+
+    /* ── Búsqueda ── */
     const searchLabel = document.querySelector('label[for="search-input"]');
     const searchInput = document.getElementById('search-input');
     searchLabel.addEventListener('click', () => { const v = searchInput.classList.toggle('visible'); if (v) searchInput.focus(); });
     function buscarProducto(e) { if (e.key === 'Enter') { const q = searchInput.value.trim(); if (q) window.location.href = '/buscar/?q=' + encodeURIComponent(q); } }
 
+    /* ── Hamburguesa ── */
+    const btnHamburguesa = document.getElementById('btnHamburguesa');
+    const menuMovil = document.getElementById('menuMovil');
+    btnHamburguesa.addEventListener('click', () => {
+      menuMovil.classList.toggle('abierto');
+      btnHamburguesa.innerHTML = menuMovil.classList.contains('abierto')
+        ? '<i class="fas fa-times"></i>'
+        : '<i class="fas fa-bars"></i>';
+    });
+
+    /* ── Eliminar item ── */
     function eliminarItem(productoId) {
       if (!confirm('¿Eliminar este producto del carrito?')) return;
       fetch(`/carrito/eliminar/${productoId}/`, { method: 'POST', headers: { 'X-CSRFToken': csrfToken } })
@@ -176,6 +206,7 @@
       }).catch(() => alert('❌ Error de conexión'));
     }
 
+    /* ── Actualizar cantidad ── */
     document.querySelectorAll('.input-cantidad').forEach(input => {
       input.addEventListener('change', function () {
         const productoId = this.dataset.id;

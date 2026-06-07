@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/hombres.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     .confirmacion-box { max-width: 520px; margin: 60px auto; background: white; border-radius: 20px; padding: 50px 40px; text-align: center; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
     .icono-check { font-size: 64px; margin-bottom: 20px; display: block; }
@@ -24,16 +25,29 @@
 
   <header class="barra-superior">
     <div class="barra-inner">
-      <div class="barra-izq"></div>
+      <div class="barra-izq">
+        {% if request.user.is_authenticated and request.user.es_admin %}
+          <a href="/admin/dashboard/" class="btn-admin"><i class="bi bi-clipboard-fill"></i></a>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+          <span class="saludo">Hola, <strong>{{ request.user.nombre }}</strong></span>
+        {% else %}
+          <div class="ticker-movil">
+            <span>✦ Devoluciones en 30 días &nbsp;&nbsp;&nbsp; ✦ Pago seguro garantizado &nbsp;&nbsp;&nbsp;</span>
+          </div>
+        {% endif %}
+      </div>
       <span class="texto-envio">✦ Envíos gratis desde $150.000 ✦</span>
       <div class="barra-der">
         <a href="/carrito/" class="icono-barra carrito-wrap">
           <i class="fas fa-shopping-bag"></i>
-          <span class="badge-carrito">0</span>
+          <span class="badge-carrito">{{ cantidadItems }}</span>
         </a>
       </div>
     </div>
   </header>
+
+  <div class="banda-envios-movil">✦ Envíos gratis desde $150.000 ✦</div>
 
   <nav class="navbar">
     <a href="/" class="logo"><img src="{% static 'imágenes/v290_388.png' %}" alt="Logo"></a>
@@ -43,15 +57,34 @@
       <a href="/ninos/"   class="link-nav">Niños</a>
       <a href="/otros/"   class="link-nav">Otros</a>
     </div>
+    <div class="auth-section">
+      {% if not request.user.is_authenticated %}
+        <a href="/login/" class="link-auth">Iniciar sesión</a>
+        <span class="sep-v"></span>
+        <a href="/registro/" class="link-auth link-auth--cta">Crear cuenta</a>
+      {% else %}
+        <form action="/logout/" method="post">{% csrf_token %}<button type="submit" class="btn-logout">Cerrar sesión</button></form>
+      {% endif %}
+    </div>
+    <button class="btn-hamburguesa" id="btnHamburguesa" aria-label="Menú">
+      <i class="fas fa-bars"></i>
+    </button>
   </nav>
+
   <hr class="linea-nav">
+
+  <div class="menu-movil" id="menuMovil">
+    <a href="/hombres/">Hombres</a>
+    <a href="/mujeres/">Mujeres</a>
+    <a href="/ninos/">Niños</a>
+    <a href="/otros/">Otros</a>
+  </div>
 
   <main class="pagina-contenido">
     <div class="confirmacion-box">
       <span class="icono-check">✅</span>
       <h2 class="conf-titulo">¡Pago recibido!</h2>
       <p class="conf-sub">Tu pedido ha sido procesado exitosamente. Pronto recibirás más información.</p>
-
       <div class="detalle">
         <strong>Método de pago</strong>
         <span>{% if metodo_pago == 'pse' %}PSE — Transferencia bancaria{% elif metodo_pago == 'debito' %}Tarjeta Débito{% else %}{{ metodo_pago }}{% endif %}</span>
@@ -59,19 +92,28 @@
         <strong>Total pagado</strong>
         <span>${{ total|floatformat:0 }}</span>
       </div>
-
       <a href="/" class="btn-inicio">Seguir comprando</a>
     </div>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      <div class="footer-col"><h4>Oksumoda</h4><ul><li><a href="#">Nuestra historia</a></li></ul></div>
-      <div class="footer-col"><h4>Ayuda</h4><ul><li><a href="#">Envíos</a></li></ul></div>
+      <div class="footer-col"><h4>Oksumoda</h4><ul><li><a href="#">Nuestra historia</a></li><li><a href="#">Trabaja con nosotros</a></li><li><a href="#">Sostenibilidad</a></li></ul></div>
+      <div class="footer-col"><h4>Ayuda</h4><ul><li><a href="#">Envíos</a></li><li><a href="#">Devoluciones</a></li></ul></div>
       <div class="footer-col"><h4>Síguenos</h4><div class="redes"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a></div></div>
     </div>
     <div class="footer-copy"><p>&copy; 2025 Oksumoda. Todos los derechos reservados.</p></div>
   </footer>
 
+  <script>
+    const btnHamburguesa = document.getElementById('btnHamburguesa');
+    const menuMovil = document.getElementById('menuMovil');
+    btnHamburguesa.addEventListener('click', () => {
+      menuMovil.classList.toggle('abierto');
+      btnHamburguesa.innerHTML = menuMovil.classList.contains('abierto')
+        ? '<i class="fas fa-times"></i>'
+        : '<i class="fas fa-bars"></i>';
+    });
+  </script>
 </body>
 </html>

@@ -4,61 +4,132 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contáctanos</title>
-  <link href="https://fonts.googleapis.com/css?family=Instrument+Sans&display=swap" rel="stylesheet" />
+  <title>Contáctanos - Oksumoda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/hombres.css' %}">
   <link rel="stylesheet" href="{% static 'css/contactanos.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <div class="left-panel">
-      <div class="logo"></div>
-      <h1>Ponte en contacto con <br>nosotros</h1>
-      <p>En Otsu Moda nos encanta escucharte. Si tienes sugerencias, necesitas ayuda con tu compra o simplemente quieres saber más sobre nuestras colecciones, escríbenos. Nuestro equipo estará feliz de responderte lo más pronto posible.</p>
-      <div class="contact-info">
-        <p><i class="fas fa-building"></i> Calle 23 #22-22 Bogotá,<br>Colombia</p>
-        <p><i class="fas fa-phone"></i> + 1 (555) - 09988</p>
-        <p><i class="fas fa-envelope"></i> otsu.moda@email.com</p>
+
+  <header class="barra-superior">
+    <div class="barra-inner">
+      <div class="barra-izq">
+        {% if request.user.is_authenticated and request.user.es_admin %}
+          <a href="/admin/dashboard/" class="btn-admin"><i class="bi bi-clipboard-fill"></i></a>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+          <span class="saludo">Hola, <strong>{{ request.user.nombre }}</strong></span>
+        {% else %}
+          <div class="ticker-movil">
+            <span>✦ Devoluciones en 30 días &nbsp;&nbsp;&nbsp; ✦ Pago seguro garantizado &nbsp;&nbsp;&nbsp;</span>
+          </div>
+        {% endif %}
+      </div>
+      <span class="texto-envio">✦ Envíos gratis desde $150.000 ✦</span>
+      <div class="barra-der">
+        <a href="/contactanos/" class="icono-barra"><i class="fas fa-user"></i></a>
+        <div class="separador-barra"></div>
+        <a href="/carrito/" class="icono-barra carrito-wrap">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="badge-carrito">{{ cantidadItems }}</span>
+        </a>
       </div>
     </div>
+  </header>
 
-    <form class="right-panel" onsubmit="return validarFormulario()">
-      <div class="form-group half">
-        <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" />
-        <span class="error-msg" id="error-nombre"></span>
-      </div>
-      <div class="form-group half">
-        <label for="apellido">Apellido</label>
-        <input type="text" id="apellido" />
-        <span class="error-msg" id="error-apellido"></span>
-      </div>
+  <div class="banda-envios-movil">✦ Envíos gratis desde $150.000 ✦</div>
 
-      <div class="form-group">
-        <label for="correo">Correo electrónico</label>
-        <input type="email" id="correo" />
-        <span class="error-msg" id="error-correo"></span>
-      </div>
+  <nav class="navbar">
+    <a href="/" class="logo"><img src="{% static 'imágenes/v290_388.png' %}" alt="Logo"></a>
+    <div class="menu-nav">
+      <a href="/hombres/" class="link-nav">Hombres</a>
+      <a href="/mujeres/" class="link-nav">Mujeres</a>
+      <a href="/ninos/"   class="link-nav">Niños</a>
+      <a href="/otros/"   class="link-nav">Otros</a>
+    </div>
+    <div class="auth-section">
+      {% if not request.user.is_authenticated %}
+        <a href="/login/" class="link-auth">Iniciar sesión</a>
+        <span class="sep-v"></span>
+        <a href="/registro/" class="link-auth link-auth--cta">Crear cuenta</a>
+      {% else %}
+        <form action="/logout/" method="post">{% csrf_token %}<button type="submit" class="btn-logout">Cerrar sesión</button></form>
+      {% endif %}
+    </div>
+    <button class="btn-hamburguesa" id="btnHamburguesa" aria-label="Menú">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
 
-      <div class="form-group">
-        <label for="telefono">Número de teléfono</label>
-        <input type="tel" id="telefono" />
-        <span class="error-msg" id="error-telefono"></span>
-      </div>
+  <hr class="linea-nav">
 
-      <div class="form-group">
-        <label for="mensaje">Mensaje</label>
-        <textarea id="mensaje"></textarea>
-        <span class="error-msg" id="error-mensaje"></span>
-      </div>
-
-      <div class="form-group align-right">
-        <button type="submit" class="btn-contacto">Enviar mensaje</button>
-      </div>
-    </form>
+  <div class="menu-movil" id="menuMovil">
+    <a href="/hombres/">Hombres</a>
+    <a href="/mujeres/">Mujeres</a>
+    <a href="/ninos/">Niños</a>
+    <a href="/otros/">Otros</a>
   </div>
 
+  <main class="pagina-contenido">
+    <div class="container">
+      <div class="left-panel">
+        <div class="logo-contacto"></div>
+        <h1>Ponte en contacto con <br>nosotros</h1>
+        <p>En Otsu Moda nos encanta escucharte. Si tienes sugerencias, necesitas ayuda con tu compra o simplemente quieres saber más sobre nuestras colecciones, escríbenos. Nuestro equipo estará feliz de responderte lo más pronto posible.</p>
+        <div class="contact-info">
+          <p><i class="fas fa-building"></i> Calle 23 #22-22 Bogotá,<br>Colombia</p>
+          <p><i class="fas fa-phone"></i> + 1 (555) - 09988</p>
+          <p><i class="fas fa-envelope"></i> otsu.moda@email.com</p>
+        </div>
+      </div>
+
+      <form class="right-panel" onsubmit="return validarFormulario()">
+        <div class="form-group half">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" />
+          <span class="error-msg" id="error-nombre"></span>
+        </div>
+        <div class="form-group half">
+          <label for="apellido">Apellido</label>
+          <input type="text" id="apellido" />
+          <span class="error-msg" id="error-apellido"></span>
+        </div>
+        <div class="form-group">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" />
+          <span class="error-msg" id="error-correo"></span>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Número de teléfono</label>
+          <input type="tel" id="telefono" />
+          <span class="error-msg" id="error-telefono"></span>
+        </div>
+        <div class="form-group">
+          <label for="mensaje">Mensaje</label>
+          <textarea id="mensaje"></textarea>
+          <span class="error-msg" id="error-mensaje"></span>
+        </div>
+        <div class="form-group align-right">
+          <button type="submit" class="btn-contacto">Enviar mensaje</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
   <script>
+    /* ── Hamburguesa ── */
+    const btnHamburguesa = document.getElementById('btnHamburguesa');
+    const menuMovil = document.getElementById('menuMovil');
+    btnHamburguesa.addEventListener('click', () => {
+      menuMovil.classList.toggle('abierto');
+      btnHamburguesa.innerHTML = menuMovil.classList.contains('abierto')
+        ? '<i class="fas fa-times"></i>'
+        : '<i class="fas fa-bars"></i>';
+    });
+
+    /* ── Formulario ── */
     function validarFormulario() {
       const campos = [
         { id: "nombre", nombre: "Nombre" },
@@ -67,9 +138,7 @@
         { id: "telefono", nombre: "Teléfono" },
         { id: "mensaje", nombre: "Mensaje" }
       ];
-
       let valido = true;
-
       campos.forEach(campo => {
         const input = document.getElementById(campo.id);
         const error = document.getElementById("error-" + campo.id);
@@ -80,7 +149,6 @@
           error.textContent = "";
         }
       });
-
       return valido ? (window.location.href = "404", false) : false;
     }
   </script>
