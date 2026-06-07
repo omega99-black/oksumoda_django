@@ -1,18 +1,18 @@
-"""
-apps/carrito/context_processors.py
+# apps/carrito/context_processors.py
 
-Equivalente al model.addAttribute("cantidadItems", carritoService.obtenerCantidadItems())
-que aparece en cada método del IndexController.
-Con un context processor, el dato se inyecta automáticamente en TODAS las plantillas.
-"""
+from decimal import Decimal
 
-from .services import obtener_cantidad_items
-
+CARRITO_SESSION_KEY = 'carrito'
 
 def carrito_context(request):
-    """Inyecta cantidadItems en todos los templates (equivalente al model.addAttribute global)."""
-    if request.user.is_authenticated:
-        cantidad = obtener_cantidad_items(request.session)
-    else:
+    if not hasattr(request, 'session'):
+        return {'cantidadItems': 0}
+    
+    try:
+        # Solo leer, nunca escribir
+        carrito = request.session.get(CARRITO_SESSION_KEY, {})
+        cantidad = sum(item.get('cantidad', 0) for item in carrito.values())
+    except Exception:
         cantidad = 0
+    
     return {'cantidadItems': cantidad}
