@@ -20,11 +20,11 @@ body {
   font-family: 'Instrument Sans', sans-serif;
   background-color: #0f0f0f;
   background-image:
-    linear-gradient(rgba(235,0,41,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(235,0,41,0.04) 1px, transparent 1px),
-    radial-gradient(ellipse 80% 60% at 20% 50%, rgba(235,0,41,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 80% 20%, rgba(235,0,41,0.07) 0%, transparent 55%);
-  background-size: 48px 48px, 48px 48px, 100% 100%, 100% 100%;
+    linear-gradient(rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.55) 100%),
+    url('https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: var(--negro);
   overflow-x: hidden;
 }
@@ -326,3 +326,42 @@ form { display: flex; flex-direction: column; gap: 14px; }
   .panel-form { padding: 36px 24px 40px; border-radius: 18px; }
   .form-header h1 { font-size: 1.5rem; }
 }
+
+/* ════════════════════════════════════════════
+   ÍCONOS DECORATIVOS FLOTANTES
+════════════════════════════════════════════ */
+.deco-icons {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.deco {
+  position: absolute;
+  color: rgba(255,255,255,0.07);
+  font-size: 2.2rem;
+  animation: floatDeco linear infinite;
+}
+
+/* Posiciones y tamaños variados */
+.d1 { left:  6%;  top: 12%; font-size: 3.5rem; animation-duration: 18s; animation-delay: 0s;    color: rgba(255,255,255,0.06); }
+.d2 { left: 14%;  top: 68%; font-size: 1.4rem; animation-duration: 22s; animation-delay: -4s;   color: rgba(235,0,41,0.18); }
+.d3 { left: 76%;  top:  8%; font-size: 2.8rem; animation-duration: 20s; animation-delay: -8s;   color: rgba(255,255,255,0.05); }
+.d4 { left: 88%;  top: 55%; font-size: 1.8rem; animation-duration: 25s; animation-delay: -2s;   color: rgba(235,0,41,0.14); }
+.d5 { left: 55%;  top: 80%; font-size: 1.6rem; animation-duration: 17s; animation-delay: -6s;   color: rgba(235,0,41,0.20); }
+.d6 { left: 38%;  top:  5%; font-size: 1.3rem; animation-duration: 28s; animation-delay: -12s;  color: rgba(255,255,255,0.08); }
+.d7 { left: 92%;  top: 25%; font-size: 2.2rem; animation-duration: 21s; animation-delay: -9s;   color: rgba(255,255,255,0.05); }
+.d8 { left:  2%;  top: 42%; font-size: 1.1rem; animation-duration: 24s; animation-delay: -15s;  color: rgba(235,0,41,0.12); }
+
+@keyframes floatDeco {
+  0%   { transform: translateY(0px)   rotate(0deg);   opacity: 0.6; }
+  25%  { transform: translateY(-18px) rotate(8deg);   opacity: 1;   }
+  50%  { transform: translateY(-8px)  rotate(-5deg);  opacity: 0.7; }
+  75%  { transform: translateY(-22px) rotate(12deg);  opacity: 1;   }
+  100% { transform: translateY(0px)   rotate(0deg);   opacity: 0.6; }
+}
+
+/* La tarjeta va encima de los íconos */
+.panel-form { z-index: 1; }
