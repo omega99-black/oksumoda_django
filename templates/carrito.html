@@ -4,39 +4,285 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Carrito - Oksumoda</title>
+  <title>Mi Carrito - Oksu Moda</title>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/hombres.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    .carrito-container { max-width: 1100px; margin: 0 auto; padding: 40px 3vw 80px; }
-    .tabla-carrito { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-    .tabla-carrito th { background: #0f0f0f; color: white; padding: 12px 16px; text-align: left; font-size: 0.88rem; }
-    .tabla-carrito td { padding: 14px 16px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; font-size: 0.9rem; }
+    /* ═══════════════════════════════════
+       CARRITO — ESTILOS BASE
+    ═══════════════════════════════════ */
+    .carrito-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 3vw 80px;
+    }
+
+    .titulo-carrito {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+
+    .carrito-layout {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .carrito-tabla-wrap {
+      flex: 1;
+      min-width: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tabla-carrito {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      min-width: 500px;
+    }
+
+    .tabla-carrito th {
+      background: #0f0f0f;
+      color: white;
+      padding: 12px 14px;
+      text-align: left;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .tabla-carrito td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: middle;
+      font-size: 0.88rem;
+    }
+
     .tabla-carrito tr:hover td { background: #fafafa; }
-    .producto-img { width: 70px; height: 90px; object-fit: cover; object-position: top center; border-radius: 10px; margin-right: 12px; }
-    .producto-info { display: flex; align-items: center; }
-    .btn-eliminar { background: none; border: 1.5px solid #dc3545; color: #dc3545; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+
+    .producto-img {
+      width: 60px;
+      height: 78px;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 8px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .producto-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .nombre-item {
+      font-size: 0.85rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .btn-eliminar {
+      background: none;
+      border: 1.5px solid #dc3545;
+      color: #dc3545;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
     .btn-eliminar:hover { background: #dc3545; color: white; }
-    .input-cantidad { width: 70px; padding: 6px; text-align: center; border: 1.5px solid #ddd; border-radius: 6px; font-family: 'Instrument Sans', sans-serif; }
-    .resumen-card { background: #f8f8f8; border: 1px solid #eee; border-radius: 16px; padding: 24px; }
-    .resumen-card h4 { font-weight: 700; border-bottom: 2px solid #0f0f0f; padding-bottom: 10px; margin-bottom: 20px; }
-    .resumen-fila { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.93rem; }
-    .resumen-total { font-size: 1.1rem; font-weight: 700; border-top: 2px solid #0f0f0f; padding-top: 12px; margin-top: 12px; }
-    .btn-checkout { display: block; width: 100%; background: #0f0f0f; color: white; padding: 14px; border: none; border-radius: 50px; font-size: 1rem; font-weight: 700; font-family: 'Instrument Sans', sans-serif; cursor: pointer; margin-top: 16px; text-align: center; text-decoration: none; transition: background 0.2s; }
+
+    .input-cantidad {
+      width: 65px;
+      padding: 6px;
+      text-align: center;
+      border: 1.5px solid #ddd;
+      border-radius: 6px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 0.88rem;
+    }
+
+    /* ── Resumen ── */
+    .carrito-resumen {
+      width: 300px;
+      flex-shrink: 0;
+    }
+
+    .resumen-card {
+      background: #f8f8f8;
+      border: 1px solid #eee;
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .resumen-card h4 {
+      font-weight: 700;
+      border-bottom: 2px solid #0f0f0f;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .resumen-fila {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 0.93rem;
+    }
+
+    .resumen-total {
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-top: 2px solid #0f0f0f;
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+
+    .btn-checkout {
+      display: block;
+      width: 100%;
+      background: #0f0f0f;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: 'Instrument Sans', sans-serif;
+      cursor: pointer;
+      margin-top: 16px;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
     .btn-checkout:hover { background: #EB0029; color: white; }
-    .btn-seguir { display: block; width: 100%; background: white; color: #0f0f0f; padding: 12px; border: 1.5px solid #0f0f0f; border-radius: 50px; font-size: 0.93rem; font-family: 'Instrument Sans', sans-serif; cursor: pointer; margin-top: 10px; text-align: center; text-decoration: none; transition: all 0.2s; }
+
+    .btn-seguir {
+      display: block;
+      width: 100%;
+      background: white;
+      color: #0f0f0f;
+      padding: 12px;
+      border: 1.5px solid #0f0f0f;
+      border-radius: 50px;
+      font-size: 0.93rem;
+      font-family: 'Instrument Sans', sans-serif;
+      cursor: pointer;
+      margin-top: 10px;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
     .btn-seguir:hover { background: #f0f0f0; }
-    .carrito-vacio { text-align: center; padding: 80px 20px; }
-    .carrito-vacio i { font-size: 60px; color: #ccc; margin-bottom: 20px; display: block; }
+
+    /* ── Carrito vacío ── */
+    .carrito-vacio {
+      text-align: center;
+      padding: 80px 20px;
+    }
+    .carrito-vacio i {
+      font-size: 60px;
+      color: #ccc;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    /* ── Misc ── */
     .envio-gratis { color: #16a34a; font-weight: 700; }
-    .badge-items { background: #0f0f0f; color: white; border-radius: 50%; padding: 2px 8px; font-size: 0.75rem; }
-    .titulo-carrito { font-size: 1.8rem; font-weight: 700; margin-bottom: 30px; }
+    .badge-items {
+      background: #0f0f0f;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+    }
+
+    /* ═══════════════════════════════════
+       RESPONSIVE — MÓVIL
+    ═══════════════════════════════════ */
+    @media (max-width: 768px) {
+      .carrito-container {
+        padding: 24px 14px 60px;
+      }
+
+      .titulo-carrito {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+      }
+
+      /* Layout en columna: tabla arriba, resumen abajo */
+      .carrito-layout {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      /* Resumen ocupa todo el ancho */
+      .carrito-resumen {
+        width: 100%;
+      }
+
+      /* Tabla con scroll horizontal */
+      .carrito-tabla-wrap {
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      }
+
+      .tabla-carrito {
+        min-width: 480px;
+        font-size: 0.82rem;
+      }
+
+      .tabla-carrito th,
+      .tabla-carrito td {
+        padding: 10px 10px;
+      }
+
+      .producto-img {
+        width: 46px;
+        height: 60px;
+        margin-right: 8px;
+      }
+
+      .nombre-item {
+        font-size: 0.80rem;
+        max-width: 90px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .input-cantidad {
+        width: 52px;
+        padding: 5px;
+        font-size: 0.82rem;
+      }
+
+      .btn-eliminar {
+        padding: 4px 8px;
+        font-size: 0.78rem;
+      }
+
+      .resumen-card {
+        padding: 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .tabla-carrito {
+        min-width: 440px;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <!-- ══ BARRA SUPERIOR ══ -->
   <header class="barra-superior">
     <div class="barra-inner">
       <div class="barra-izq">
@@ -67,6 +313,7 @@
 
   <div class="banda-envios-movil">✦ Envíos gratis desde $150.000 ✦</div>
 
+  <!-- ══ NAVBAR ══ -->
   <nav class="navbar">
     <a href="/" class="logo"><img src="{% static 'imágenes/v290_388.png' %}" alt="Logo"></a>
     <div class="menu-nav">
@@ -81,7 +328,10 @@
         <span class="sep-v"></span>
         <a href="/registro/" class="link-auth link-auth--cta">Crear cuenta</a>
       {% else %}
-        <form action="/logout/" method="post">{% csrf_token %}<button type="submit" class="btn-logout">Cerrar sesión</button></form>
+        <form action="/logout/" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn-logout">Cerrar sesión</button>
+        </form>
       {% endif %}
     </div>
     <button class="btn-hamburguesa" id="btnHamburguesa" aria-label="Menú">
@@ -98,17 +348,26 @@
     <a href="/otros/">Otros</a>
   </div>
 
+  <!-- ══ CONTENIDO ══ -->
   <main class="pagina-contenido">
     <div class="carrito-container">
       <h2 class="titulo-carrito">🛒 Mi Carrito <span class="badge-items">{{ cantidadItems }}</span></h2>
 
       {% if items %}
-      <div style="display:flex;gap:30px;align-items:flex-start;flex-wrap:wrap;">
+      <div class="carrito-layout">
 
-        <div style="flex:1;min-width:300px;">
+        <!-- Columna izquierda: tabla -->
+        <div class="carrito-tabla-wrap">
           <table class="tabla-carrito">
             <thead>
-              <tr><th>Producto</th><th>Talla / Color</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th><th></th></tr>
+              <tr>
+                <th>Producto</th>
+                <th>Talla / Color</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
             </thead>
             <tbody>
               {% for item in items %}
@@ -118,35 +377,56 @@
                     {% if item.imagen %}
                       <img src="{{ item.imagen }}" class="producto-img" alt="{{ item.nombre }}" onerror="this.style.display='none'">
                     {% endif %}
-                    {{ item.nombre }}
+                    <span class="nombre-item">{{ item.nombre }}</span>
                   </div>
                 </td>
                 <td>{{ item.talla }} / {{ item.color }}</td>
                 <td>${{ item.precio|floatformat:0 }}</td>
-                <td><input type="number" class="input-cantidad" value="{{ item.cantidad }}" min="1" data-id="{{ item.producto_id }}"></td>
+                <td>
+                  <input type="number" class="input-cantidad" value="{{ item.cantidad }}" min="1" data-id="{{ item.producto_id }}">
+                </td>
                 <td><strong>${{ item.subtotal|floatformat:0 }}</strong></td>
-                <td><button class="btn-eliminar" onclick="eliminarItem({{ item.producto_id }})">🗑</button></td>
+                <td>
+                  <button class="btn-eliminar" onclick="eliminarItem({{ item.producto_id }})">🗑</button>
+                </td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
+
           <form method="post" action="/carrito/vaciar/">
             {% csrf_token %}
             <button type="submit" class="btn-eliminar" style="padding:8px 16px;">🗑 Vaciar carrito</button>
           </form>
         </div>
 
-        <div style="width:300px;">
+        <!-- Columna derecha: resumen -->
+        <div class="carrito-resumen">
           <div class="resumen-card">
             <h4>Resumen del pedido</h4>
-            <div class="resumen-fila"><span>Subtotal</span><span>${{ total|floatformat:0 }}</span></div>
+            <div class="resumen-fila">
+              <span>Subtotal</span>
+              <span>${{ total|floatformat:0 }}</span>
+            </div>
             <div class="resumen-fila">
               <span>Envío</span>
-              <span>{% if total >= 150000 %}<span class="envio-gratis">¡Gratis! 🎉</span>{% else %}$10.000{% endif %}</span>
+              <span>
+                {% if total >= 150000 %}
+                  <span class="envio-gratis">¡Gratis! 🎉</span>
+                {% else %}
+                  $10.000
+                {% endif %}
+              </span>
             </div>
             <div class="resumen-fila resumen-total">
               <span>Total</span>
-              <span>{% if total >= 150000 %}${{ total|floatformat:0 }}{% else %}${{ total|floatformat:0 }} + $10.000{% endif %}</span>
+              <span>
+                {% if total >= 150000 %}
+                  ${{ total|floatformat:0 }}
+                {% else %}
+                  ${{ total|floatformat:0 }} + $10.000
+                {% endif %}
+              </span>
             </div>
             <a href="/carrito/checkout/" class="btn-checkout">Proceder al pago →</a>
             <a href="{{ pagina_anterior }}" class="btn-seguir">← Seguir comprando</a>
@@ -154,7 +434,9 @@
         </div>
 
       </div>
+
       {% else %}
+      <!-- Carrito vacío -->
       <div class="carrito-vacio">
         <i class="fas fa-shopping-bag"></i>
         <h4 style="color:#999;margin-bottom:8px;">Tu carrito está vacío</h4>
@@ -162,16 +444,41 @@
         <a href="{{ pagina_anterior }}" class="btn-checkout" style="display:inline-block;width:auto;padding:12px 30px;">Ver productos</a>
       </div>
       {% endif %}
+
     </div>
   </main>
 
+  <!-- ══ FOOTER ══ -->
   <footer class="footer">
     <div class="footer-inner">
-      <div class="footer-col"><h4>Oksumoda</h4><ul><li><a href="#">Nuestra historia</a></li><li><a href="#">Trabaja con nosotros</a></li><li><a href="#">Sostenibilidad</a></li></ul></div>
-      <div class="footer-col"><h4>Ayuda</h4><ul><li><a href="#">Envíos</a></li><li><a href="#">Devoluciones</a></li><li><a href="#">Guía de tallas</a></li></ul></div>
-      <div class="footer-col"><h4>Síguenos</h4><div class="redes"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div></div>
+      <div class="footer-col">
+        <h4>Oksumoda</h4>
+        <ul>
+          <li><a href="#">Nuestra historia</a></li>
+          <li><a href="#">Trabaja con nosotros</a></li>
+          <li><a href="#">Sostenibilidad</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Ayuda</h4>
+        <ul>
+          <li><a href="#">Envíos</a></li>
+          <li><a href="#">Devoluciones</a></li>
+          <li><a href="#">Guía de tallas</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Síguenos</h4>
+        <div class="redes">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
     </div>
-    <div class="footer-copy"><p>&copy; 2025 Oksumoda. Todos los derechos reservados.</p></div>
+    <div class="footer-copy">
+      <p>&copy; 2025 Oksumoda. Todos los derechos reservados.</p>
+    </div>
   </footer>
 
   <script>
@@ -180,8 +487,16 @@
     /* ── Búsqueda ── */
     const searchLabel = document.querySelector('label[for="search-input"]');
     const searchInput = document.getElementById('search-input');
-    searchLabel.addEventListener('click', () => { const v = searchInput.classList.toggle('visible'); if (v) searchInput.focus(); });
-    function buscarProducto(e) { if (e.key === 'Enter') { const q = searchInput.value.trim(); if (q) window.location.href = '/buscar/?q=' + encodeURIComponent(q); } }
+    searchLabel.addEventListener('click', () => {
+      const v = searchInput.classList.toggle('visible');
+      if (v) searchInput.focus();
+    });
+    function buscarProducto(e) {
+      if (e.key === 'Enter') {
+        const q = searchInput.value.trim();
+        if (q) window.location.href = '/buscar/?q=' + encodeURIComponent(q);
+      }
+    }
 
     /* ── Hamburguesa ── */
     const btnHamburguesa = document.getElementById('btnHamburguesa');
@@ -196,14 +511,21 @@
     /* ── Eliminar item ── */
     function eliminarItem(productoId) {
       if (!confirm('¿Eliminar este producto del carrito?')) return;
-      fetch(`/carrito/eliminar/${productoId}/`, { method: 'POST', headers: { 'X-CSRFToken': csrfToken } })
-      .then(r => r.json()).then(data => {
+      fetch(`/carrito/eliminar/${productoId}/`, {
+        method: 'POST',
+        headers: { 'X-CSRFToken': csrfToken }
+      })
+      .then(r => r.json())
+      .then(data => {
         if (data.success) {
           document.getElementById(`fila-${productoId}`).remove();
           document.querySelector('.badge-carrito').textContent = data.cantidadItems;
           if (data.cantidadItems === 0) location.reload();
-        } else alert('❌ Error al eliminar');
-      }).catch(() => alert('❌ Error de conexión'));
+        } else {
+          alert('❌ Error al eliminar');
+        }
+      })
+      .catch(() => alert('❌ Error de conexión'));
     }
 
     /* ── Actualizar cantidad ── */
@@ -212,8 +534,20 @@
         const productoId = this.dataset.id;
         const cantidad = parseInt(this.value);
         if (cantidad < 1) { this.value = 1; return; }
-        fetch(`/carrito/actualizar/${productoId}/`, { method: 'POST', headers: { 'X-CSRFToken': csrfToken, 'Content-Type': 'application/x-www-form-urlencoded' }, body: `cantidad=${cantidad}` })
-        .then(r => r.json()).then(data => { if (data.success) document.querySelector('.badge-carrito').textContent = data.cantidadItems; });
+        fetch(`/carrito/actualizar/${productoId}/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrfToken,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: `cantidad=${cantidad}`
+        })
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            document.querySelector('.badge-carrito').textContent = data.cantidadItems;
+          }
+        });
       });
     });
   </script>

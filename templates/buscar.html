@@ -9,6 +9,44 @@
   <link rel="stylesheet" href="{% static 'css/hombres.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    /* ── Barra superior fija ── */
+    .barra-superior {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    /* ── Navbar fijo ── */
+    .navbar {
+      position: fixed;
+      top: 52px; left: 0;
+      width: 100%;
+      z-index: 999;
+      background: #ffffff;
+    }
+
+    .linea-nav {
+      position: fixed;
+      top: 116px; left: 3vw;
+      width: 94vw;
+      z-index: 998;
+    }
+
+    /* ── Compensar el espacio del header fijo ── */
+    .pagina-contenido {
+      padding-top: 120px;
+    }
+
+    /* ── Responsive: ajuste móvil ── */
+    @media (max-width: 768px) {
+      .navbar { top: 79px; }
+      .linea-nav { top: 135px; }
+      .pagina-contenido { padding-top: 140px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -50,7 +88,10 @@
         <span class="sep-v"></span>
         <a href="/registro/" class="link-auth link-auth--cta">Crear cuenta</a>
       {% else %}
-        <form action="/logout/" method="post">{% csrf_token %}<button type="submit" class="btn-logout">Cerrar sesión</button></form>
+        <form action="/logout/" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn-logout">Cerrar sesión</button>
+        </form>
       {% endif %}
     </div>
   </nav>
@@ -62,8 +103,11 @@
         <p class="hero-cat-tag">— Búsqueda</p>
         <h1 class="hero-cat-titulo">{% if query %}"{{ query }}"{% else %}Buscar productos{% endif %}</h1>
         <p class="hero-cat-sub">
-          {% if productos %}{{ productos|length }} producto{{ productos|length|pluralize }} encontrado{{ productos|length|pluralize }}
-          {% elif query %}No encontramos resultados para tu búsqueda{% endif %}
+          {% if productos %}
+            {{ productos|length }} producto{{ productos|length|pluralize }} encontrado{{ productos|length|pluralize }}
+          {% elif query %}
+            No encontramos resultados para tu búsqueda
+          {% endif %}
         </p>
       </div>
     </section>
@@ -82,7 +126,12 @@
             {% endif %}
             <div class="acciones-rapidas">
               <a href="/producto/{{ producto.id_producto }}/" class="btn-accion"><i class="fas fa-eye"></i></a>
-              <button class="btn-accion btn-agregar-carrito" data-id="{{ producto.id_producto }}" data-talla="{{ producto.get_tallas_list.0 }}" data-color="{{ producto.get_colores_list.0 }}"><i class="fas fa-shopping-bag"></i></button>
+              <button class="btn-accion btn-agregar-carrito"
+                data-id="{{ producto.id_producto }}"
+                data-talla="{{ producto.get_tallas_list.0 }}"
+                data-color="{{ producto.get_colores_list.0 }}">
+                <i class="fas fa-shopping-bag"></i>
+              </button>
               <button class="btn-accion"><i class="far fa-heart"></i></button>
             </div>
           </div>
@@ -92,12 +141,25 @@
             </a>
             <p class="categoria-producto">{{ producto.subcategoria }}</p>
             <div class="precio-producto">
-              {% if producto.precio_anterior %}<span class="precio-anterior">${{ producto.precio_anterior|floatformat:0 }}</span>{% endif %}
+              {% if producto.precio_anterior %}
+                <span class="precio-anterior">${{ producto.precio_anterior|floatformat:0 }}</span>
+              {% endif %}
               <span class="precio-actual">${{ producto.precio|floatformat:0 }}</span>
             </div>
             <div class="colores-disponibles">
               {% for color in producto.get_colores_list %}
-                <span class="color-muestra" title="{{ color }}" style="background:{% if color == 'Negro' %}#1a1a1a{% elif color == 'Blanco' %}#ffffff{% elif color == 'Azul' %}#2c5aa0{% elif color == 'Rojo' %}#c41e3a{% elif color == 'Gris' %}#4a4a4a{% elif color == 'Café' %}#8b4513{% elif color == 'Rosa' %}#ff69b4{% else %}#888{% endif %};{% if color == 'Blanco' %}border:1px solid #ddd;{% endif %}"></span>
+                <span class="color-muestra" title="{{ color }}" style="background:
+                  {% if color == 'Negro' %}#1a1a1a
+                  {% elif color == 'Blanco' %}#ffffff
+                  {% elif color == 'Azul' %}#2c5aa0
+                  {% elif color == 'Rojo' %}#c41e3a
+                  {% elif color == 'Gris' %}#4a4a4a
+                  {% elif color == 'Café' %}#8b4513
+                  {% elif color == 'Rosa' %}#ff69b4
+                  {% else %}#888
+                  {% endif %};
+                  {% if color == 'Blanco' %}border:1px solid #ddd;{% endif %}">
+                </span>
               {% endfor %}
             </div>
           </div>
@@ -116,19 +178,73 @@
 
   <footer class="footer">
     <div class="footer-inner">
-      <div class="footer-col"><h4>Oksumoda</h4><ul><li><a href="#">Nuestra historia</a></li><li><a href="#">Trabaja con nosotros</a></li><li><a href="#">Sostenibilidad</a></li></ul></div>
-      <div class="footer-col"><h4>Ayuda</h4><ul><li><a href="#">Envíos</a></li><li><a href="#">Devoluciones</a></li><li><a href="#">Guía de tallas</a></li></ul></div>
-      <div class="footer-col"><h4>Síguenos</h4><div class="redes"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div></div>
+      <div class="footer-col">
+        <h4>Oksumoda</h4>
+        <ul>
+          <li><a href="#">Nuestra historia</a></li>
+          <li><a href="#">Trabaja con nosotros</a></li>
+          <li><a href="#">Sostenibilidad</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Ayuda</h4>
+        <ul>
+          <li><a href="#">Envíos</a></li>
+          <li><a href="#">Devoluciones</a></li>
+          <li><a href="#">Guía de tallas</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Síguenos</h4>
+        <div class="redes">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
     </div>
-    <div class="footer-copy"><p>&copy; 2025 Oksumoda. Todos los derechos reservados.</p></div>
+    <div class="footer-copy">
+      <p>&copy; 2025 Oksumoda. Todos los derechos reservados.</p>
+    </div>
   </footer>
 
   <script>
     const searchLabel = document.querySelector('label[for="search-input"]');
     const searchInput = document.getElementById('search-input');
-    searchLabel.addEventListener('click', () => { const v = searchInput.classList.toggle('visible'); if (v) searchInput.focus(); });
-    function buscarProducto(e) { if (e.key === 'Enter') { const q = searchInput.value.trim(); if (q) window.location.href = '/buscar/?q=' + encodeURIComponent(q); } }
-    document.querySelectorAll('.btn-agregar-carrito').forEach(btn => { btn.addEventListener('click', function (e) { e.preventDefault(); fetch('/carrito/agregar/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRFToken': '{{ csrf_token }}' }, body: `productoId=${this.dataset.id}&cantidad=1&talla=${this.dataset.talla}&color=${this.dataset.color}` }).then(r => r.json()).then(data => { if (data.success) { document.querySelector('.badge-carrito').textContent = data.cantidadItems; alert('✅ ' + data.message); } else alert('❌ ' + data.message); }); }); });
+    searchLabel.addEventListener('click', () => {
+      const v = searchInput.classList.toggle('visible');
+      if (v) searchInput.focus();
+    });
+
+    function buscarProducto(e) {
+      if (e.key === 'Enter') {
+        const q = searchInput.value.trim();
+        if (q) window.location.href = '/buscar/?q=' + encodeURIComponent(q);
+      }
+    }
+
+    document.querySelectorAll('.btn-agregar-carrito').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        fetch('/carrito/agregar/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: `productoId=${this.dataset.id}&cantidad=1&talla=${this.dataset.talla}&color=${this.dataset.color}`
+        })
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            document.querySelector('.badge-carrito').textContent = data.cantidadItems;
+            alert('✅ ' + data.message);
+          } else {
+            alert('❌ ' + data.message);
+          }
+        });
+      });
+    });
   </script>
 </body>
 </html>
