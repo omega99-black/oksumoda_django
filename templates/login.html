@@ -4,61 +4,135 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iniciar sesión</title>
-  <link href="https://fonts.googleapis.com/css?family=Instrument+Sans&display=swap" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+  <title>Iniciar sesión — Oksu Moda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
-
 <body>
-  <div class="container">
-    <div class="left-form">
-      <form id="formLogin" method="post" action="/login/">
-        {% csrf_token %}
-        <div class="v261_249"></div>
 
-        <h2 class="v211_207">Inicia sesión en tu cuenta</h2>
-        <p class="v211_211">
-          ¿Aún no eres miembro?
-          <a href="/registro/" class="registrate-link">Regístrate</a>
+  <div class="page">
+
+    <!-- ── Panel izquierdo: formulario ── -->
+    <div class="panel-form">
+
+      <a href="/" class="brand">
+        <img src="{% static 'imágenes/v290_388.png' %}" alt="Oksu Moda">
+        <span>Oksumoda</span>
+      </a>
+
+      <div class="form-wrap">
+        <div class="form-header">
+          <h1>Bienvenido de vuelta</h1>
+          <p>Inicia sesión para continuar comprando</p>
+        </div>
+
+        <form id="formLogin" method="post" action="/login/">
+          {% csrf_token %}
+
+          {% if error %}
+          <div class="alert-error">
+            <i class="fas fa-circle-exclamation"></i>
+            <span>{{ error }}</span>
+          </div>
+          {% endif %}
+
+          <div class="field-group">
+            <label for="correo">Correo electrónico</label>
+            <div class="input-wrap">
+              <i class="fas fa-envelope input-icon"></i>
+              <input id="correo" type="email" name="email"
+                     placeholder="tucorreo@ejemplo.com" required autocomplete="email">
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="clave">Contraseña</label>
+            <div class="input-wrap">
+              <i class="fas fa-lock input-icon"></i>
+              <input id="clave" type="password" name="password"
+                     placeholder="••••••••" required autocomplete="current-password">
+              <button type="button" class="toggle-pw" aria-label="Mostrar contraseña"
+                      onclick="togglePw()">
+                <i class="fas fa-eye" id="eyeIcon"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="row-options">
+            <label class="check-label">
+              <input type="checkbox" name="remember">
+              <span class="checkmark"></span>
+              Recuérdame
+            </label>
+            <a href="#" class="link-olvi">¿Olvidaste tu contraseña?</a>
+          </div>
+
+          <button type="submit" class="btn-primary">
+            <span>Iniciar sesión</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+
+          <div class="divider">
+            <span>o continúa con</span>
+          </div>
+
+          <a href="https://accounts.google.com/" target="_blank" class="btn-google">
+            <svg width="20" height="20" viewBox="0 0 48 48" fill="none">
+              <path d="M44.5 20H24v8.5h11.8C34.1 34.4 29.6 38 24 38c-7.7 0-14-6.3-14-14S16.3 10 24 10c3.5 0 6.7 1.3 9.1 3.4l6-6C35.4 4.1 30 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" fill="#FFC107"/>
+              <path d="M6.3 14.7l7 5.1C15.1 16 19.2 13 24 13c3.5 0 6.7 1.3 9.1 3.4l6-6C35.4 4.1 30 2 24 2 16.3 2 9.7 7.4 6.3 14.7z" fill="#FF3D00"/>
+              <path d="M24 46c5.8 0 11.1-2.2 15.1-5.7l-7-5.7C29.9 36.7 27.1 38 24 38c-5.6 0-10.3-3.7-11.9-8.8l-6.9 5.4C9.2 41.8 16.1 46 24 46z" fill="#4CAF50"/>
+              <path d="M44.5 20H24v8.5h11.8c-.9 2.6-2.6 4.8-4.8 6.3l7 5.7C42.8 37.2 46 31.2 46 24c0-1.3-.2-2.7-.5-4z" fill="#1976D2"/>
+            </svg>
+            <span>Google</span>
+          </a>
+
+        </form>
+
+        <p class="signup-cta">
+          ¿Aún no tienes cuenta?
+          <a href="/registro/">Créala gratis</a>
         </p>
+      </div>
 
-        {% if error %}
-        <div class="error-msg">{{ error }}</div>
-        {% endif %}
-
-        <label for="correo" class="v211_213">Dirección de correo electrónico</label>
-        <input id="correo" type="email" placeholder="Correo electrónico"
-               name="email" class="input-campo" required>
-
-        <label for="clave" class="v211_215">Contraseña</label>
-        <input id="clave" type="password" placeholder="Contraseña"
-               name="password" class="input-campo" required>
-
-        <div class="checkbox-container">
-          <label>
-            <input type="checkbox" class="checkbox-custom">
-            <span class="checkmark"></span>
-            <span class="v211_220">Recuérdame</span>
-          </label>
-          <a href="#" class="v211_226">¿Olvidaste tu contraseña?</a>
-        </div>
-
-        <button type="submit" class="btn-iniciar-sesion">Iniciar sesión</button>
-
-        <div class="linea-contenedor">
-          <div class="linea"></div>
-          <span class="linea-texto">O continuar con</span>
-          <div class="linea"></div>
-        </div>
-
-        <a href="https://accounts.google.com/" target="_blank" class="google-wrapper">
-          <div class="google-icon"></div>
-          <span>Google</span>
-        </a>
-      </form>
     </div>
 
-    <div class="right-image"></div>
+    <!-- ── Panel derecho: visual ── -->
+    <div class="panel-visual">
+      <div class="visual-overlay"></div>
+      <div class="visual-bg" style="background-image:url('{% static 'imágenes/v8_36.png' %}')"></div>
+
+      <div class="visual-content">
+        <div class="visual-badge">✦ Nueva temporada</div>
+        <h2>Descubre los<br><em>estilos</em> que te<br>definen</h2>
+        <p>Ediciones limitadas · Envío gratis desde $150.000</p>
+      </div>
+
+      <!-- Tarjeta flotante -->
+      <div class="floating-card">
+        <div class="fc-icon"><i class="fas fa-truck"></i></div>
+        <div class="fc-text">
+          <strong>Envío gratis</strong>
+          <span>En compras desde $150.000</span>
+        </div>
+      </div>
+
+    </div>
+
   </div>
+
+  <script>
+    function togglePw() {
+      const input = document.getElementById('clave');
+      const icon  = document.getElementById('eyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+      }
+    }
+  </script>
 </body>
 </html>
