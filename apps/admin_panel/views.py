@@ -22,7 +22,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.conf import settings
 from django.db import IntegrityError, OperationalError
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.utils import timezone
 from datetime import timedelta, date
 from decimal import Decimal, InvalidOperation
@@ -488,6 +488,8 @@ def eliminar_producto(request, pk):
             'productos': Producto.filtrar(),
             'error': 'No se puede eliminar el producto porque está relacionado con otros registros.'
         })
+    except Http404:  # ← AGREGAR
+        raise        # ← AGREGAR
     except Exception as e:
         return render(request, 'admin/dashboard.html', {
             'currentView': 'productos',
@@ -649,6 +651,8 @@ def eliminar_categoria(request, pk):
             'categorias': _categorias_enriquecidas(),         # ← FIX
             'error': 'No se puede eliminar la categoría porque tiene productos asociados.'
         })
+    except Http404:  # ← AGREGAR
+        raise        # ← AGREGAR
     except Exception as e:
         return render(request, 'admin/dashboard.html', {
             'currentView': 'categorias',
@@ -740,6 +744,8 @@ def eliminar_cliente(request, pk):
             'clientes': Cliente.filtrar(),
             'error': 'No se puede eliminar el cliente porque tiene registros asociados.'
         })
+    except Http404:  # ← AGREGAR
+        raise        # ← AGREGAR
     except Exception as e:
         return render(request, 'admin/dashboard.html', {
             'currentView': 'clientes',
