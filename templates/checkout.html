@@ -95,6 +95,7 @@
       font-family: 'Instrument Sans', sans-serif;
       outline: none;
       transition: border-color 0.2s;
+      box-sizing: border-box;
     }
     .form-group select:focus,
     .form-group input:focus { border-color: #0f0f0f; }
@@ -266,7 +267,7 @@
   <div class="banda-envios-movil">✦ Envíos gratis desde $150.000 ✦</div>
 
   <nav class="navbar">
-    <a href="/" class="logo"><img src="{% static 'imágenes/Proyecto.jpeg' %}" alt="Logo"></a>
+    <a href="/" class="logo"><img src="{% static 'imagenes/Proyecto.jpeg' %}" alt="Logo"></a>
     <div class="menu-nav">
       <a href="/hombres/" class="link-nav">Hombres</a>
       <a href="/mujeres/" class="link-nav">Mujeres</a>
@@ -363,8 +364,11 @@
               </div>
               <div class="form-group">
                 <label>Número de documento *</label>
-                <input type="text" name="numero_doc" id="numero_doc" placeholder="Ej: 1234567890">
-                <span class="campo-error" id="error-doc">Ingresa tu número de documento.</span>
+                <input type="text" name="numero_doc" id="numero_doc"
+                       placeholder="Ej: 1234567890"
+                       inputmode="numeric" maxlength="12"
+                       autocomplete="off">
+                <span class="campo-error" id="error-doc">Ingresa un número de documento válido (mínimo 6 dígitos).</span>
               </div>
             </div>
 
@@ -376,25 +380,33 @@
               </div>
               <div class="form-group">
                 <label>Número de tarjeta *</label>
-                <input type="text" name="numero_tarjeta" id="input-tarjeta" placeholder="0000 0000 0000 0000" maxlength="19">
+                <input type="text" name="numero_tarjeta" id="input-tarjeta"
+                       placeholder="0000 0000 0000 0000" maxlength="19"
+                       inputmode="numeric" autocomplete="cc-number">
                 <span class="campo-error" id="error-tarjeta">Ingresa un número de tarjeta válido (16 dígitos).</span>
               </div>
               <div class="fila-dos">
                 <div class="form-group">
                   <label>Vencimiento *</label>
-                  <input type="text" name="vencimiento" id="input-venc" placeholder="MM/AA" maxlength="5">
-                  <span class="campo-error" id="error-venc">Ingresa la fecha de vencimiento.</span>
+                  <input type="text" name="vencimiento" id="input-venc"
+                         placeholder="MM/AA" maxlength="5"
+                         inputmode="numeric" autocomplete="cc-exp">
+                  <span class="campo-error" id="error-venc">Ingresa una fecha de vencimiento válida.</span>
                 </div>
                 <div class="form-group">
                   <label>CVV *</label>
-                  <input type="text" name="cvv" id="input-cvv" placeholder="000" maxlength="3">
+                  <input type="text" name="cvv" id="input-cvv"
+                         placeholder="000" maxlength="3"
+                         inputmode="numeric" autocomplete="cc-csc">
                   <span class="campo-error" id="error-cvv">Ingresa el CVV (3 dígitos).</span>
                 </div>
               </div>
               <div class="form-group">
                 <label>Nombre en la tarjeta *</label>
-                <input type="text" name="nombre_tarjeta" id="input-nombre-tarjeta" placeholder="Como aparece en la tarjeta">
-                <span class="campo-error" id="error-nombre-tarjeta">Ingresa el nombre en la tarjeta.</span>
+                <input type="text" name="nombre_tarjeta" id="input-nombre-tarjeta"
+                       placeholder="Como aparece en la tarjeta"
+                       autocomplete="cc-name">
+                <span class="campo-error" id="error-nombre-tarjeta">Ingresa el nombre tal como aparece en la tarjeta.</span>
               </div>
             </div>
 
@@ -498,7 +510,86 @@
       if (error) error.classList.add('visible');
     }
 
-    /* ── Validación al submit ── */
+    /* ────────────────────────────────────────────
+       RESTRICCIONES DE ENTRADA EN TIEMPO REAL
+    ──────────────────────────────────────────── */
+
+    /* ── Cédula: solo números, máx 12 dígitos ── */
+    const inputDoc = document.getElementById('numero_doc');
+    if (inputDoc) {
+      inputDoc.addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '').substring(0, 12);
+      });
+      inputDoc.addEventListener('keydown', function (e) {
+        const permitidas = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+        if (!permitidas.includes(e.key) && !/^\d$/.test(e.key) && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+        }
+      });
+    }
+
+    /* ── Tarjeta: solo números con formato 0000 0000 0000 0000 ── */
+    const inputTarjeta = document.getElementById('input-tarjeta');
+    if (inputTarjeta) {
+      inputTarjeta.addEventListener('input', function () {
+        let v = this.value.replace(/\D/g, '').substring(0, 16);
+        this.value = v.replace(/(.{4})/g, '$1 ').trim();
+      });
+      inputTarjeta.addEventListener('keydown', function (e) {
+        const permitidas = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', ' '];
+        if (!permitidas.includes(e.key) && !/^\d$/.test(e.key) && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+        }
+      });
+    }
+
+    /* ── Vencimiento: solo números con formato MM/AA ── */
+    const inputVenc = document.getElementById('input-venc');
+    if (inputVenc) {
+      inputVenc.addEventListener('input', function () {
+        let v = this.value.replace(/\D/g, '').substring(0, 4);
+        if (v.length >= 3) v = v.substring(0, 2) + '/' + v.substring(2);
+        this.value = v;
+      });
+      inputVenc.addEventListener('keydown', function (e) {
+        const permitidas = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+        if (!permitidas.includes(e.key) && !/^\d$/.test(e.key) && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+        }
+      });
+    }
+
+    /* ── CVV: solo números, exactamente 3 dígitos ── */
+    const inputCvv = document.getElementById('input-cvv');
+    if (inputCvv) {
+      inputCvv.addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '').substring(0, 3);
+      });
+      inputCvv.addEventListener('keydown', function (e) {
+        const permitidas = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+        if (!permitidas.includes(e.key) && !/^\d$/.test(e.key) && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+        }
+      });
+    }
+
+    /* ── Nombre tarjeta: solo letras y espacios (acepta tildes y ñ) ── */
+    const inputNombre = document.getElementById('input-nombre-tarjeta');
+    if (inputNombre) {
+      inputNombre.addEventListener('input', function () {
+        this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]/g, '');
+      });
+      inputNombre.addEventListener('keydown', function (e) {
+        const permitidas = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', ' '];
+        if (!permitidas.includes(e.key) && !/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]$/.test(e.key) && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+        }
+      });
+    }
+
+    /* ────────────────────────────────────────────
+       VALIDACIÓN AL ENVIAR EL FORMULARIO
+    ──────────────────────────────────────────── */
     document.getElementById('form-checkout').addEventListener('submit', function(e) {
       const metodo = document.getElementById('metodo_pago_hidden').value;
       limpiarErrores();
@@ -513,18 +604,19 @@
       if (metodo === 'pse') {
         const banco = document.getElementById('banco_pse').value;
         const doc   = document.getElementById('numero_doc').value.trim();
+
         if (!banco) {
           mostrarError('banco_pse', 'error-banco');
           valido = false;
         }
-        if (!doc) {
+        if (!doc || doc.length < 6) {
           mostrarError('numero_doc', 'error-doc');
           valido = false;
         }
       }
 
       if (metodo === 'debito') {
-        const tarjeta = document.getElementById('input-tarjeta').value.replace(/\s/g,'');
+        const tarjeta = document.getElementById('input-tarjeta').value.replace(/\s/g, '');
         const venc    = document.getElementById('input-venc').value.trim();
         const cvv     = document.getElementById('input-cvv').value.trim();
         const nombre  = document.getElementById('input-nombre-tarjeta').value.trim();
@@ -533,15 +625,29 @@
           mostrarError('input-tarjeta', 'error-tarjeta');
           valido = false;
         }
+
+        /* Validar que el mes sea 01-12 y el año no esté vencido */
         if (!venc || venc.length < 5) {
           mostrarError('input-venc', 'error-venc');
           valido = false;
+        } else {
+          const partes = venc.split('/');
+          const mes    = parseInt(partes[0], 10);
+          const anio   = parseInt('20' + partes[1], 10);
+          const hoy    = new Date();
+          const mesHoy = hoy.getMonth() + 1;
+          const anioHoy = hoy.getFullYear();
+          if (mes < 1 || mes > 12 || anio < anioHoy || (anio === anioHoy && mes < mesHoy)) {
+            mostrarError('input-venc', 'error-venc');
+            valido = false;
+          }
         }
+
         if (cvv.length < 3) {
           mostrarError('input-cvv', 'error-cvv');
           valido = false;
         }
-        if (!nombre) {
+        if (!nombre || nombre.length < 3) {
           mostrarError('input-nombre-tarjeta', 'error-nombre-tarjeta');
           valido = false;
         }
@@ -549,25 +655,6 @@
 
       if (!valido) e.preventDefault();
     });
-
-    /* ── Formato tarjeta ── */
-    const inputTarjeta = document.getElementById('input-tarjeta');
-    if (inputTarjeta) {
-      inputTarjeta.addEventListener('input', function () {
-        let v = this.value.replace(/\D/g, '').substring(0, 16);
-        this.value = v.replace(/(.{4})/g, '$1 ').trim();
-      });
-    }
-
-    /* ── Formato vencimiento ── */
-    const inputVenc = document.getElementById('input-venc');
-    if (inputVenc) {
-      inputVenc.addEventListener('input', function () {
-        let v = this.value.replace(/\D/g, '').substring(0, 4);
-        if (v.length >= 3) v = v.substring(0, 2) + '/' + v.substring(2);
-        this.value = v;
-      });
-    }
 
     /* ── Hamburguesa ── */
     const btnHamburguesa = document.getElementById('btnHamburguesa');
