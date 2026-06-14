@@ -10,9 +10,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    /* ═══════════════════════════════════
-       CHECKOUT — ESTILOS BASE
-    ═══════════════════════════════════ */
     .checkout-container {
       max-width: 900px;
       margin: 0 auto;
@@ -26,7 +23,6 @@
       align-items: flex-start;
     }
 
-    /* ── Tarjeta de pago ── */
     .pago-card {
       background: white;
       border-radius: 16px;
@@ -48,7 +44,6 @@
       margin-bottom: 28px;
     }
 
-    /* ── Métodos de pago ── */
     .metodos {
       display: flex;
       flex-direction: column;
@@ -74,7 +69,6 @@
     .metodo-texto h4 { margin: 0; font-size: 0.95rem; font-weight: 700; }
     .metodo-texto p { margin: 2px 0 0; font-size: 0.8rem; color: #888; }
 
-    /* ── Formularios de pago ── */
     .form-pago {
       display: none;
       margin-top: 18px;
@@ -100,9 +94,22 @@
       font-size: 0.88rem;
       font-family: 'Instrument Sans', sans-serif;
       outline: none;
+      transition: border-color 0.2s;
     }
     .form-group select:focus,
     .form-group input:focus { border-color: #0f0f0f; }
+
+    .form-group select.error,
+    .form-group input.error { border-color: #EB0029; }
+
+    .campo-error {
+      color: #EB0029;
+      font-size: 0.78rem;
+      font-weight: 500;
+      margin-top: 4px;
+      display: none;
+    }
+    .campo-error.visible { display: block; }
 
     .debito-info {
       background: #f0f7ff;
@@ -120,7 +127,6 @@
     }
     .fila-dos .form-group { flex: 1; }
 
-    /* ── Resumen del pedido ── */
     .resumen-checkout {
       width: 300px;
       flex-shrink: 0;
@@ -168,19 +174,11 @@
       border-bottom: 1px solid #f0f0f0;
     }
 
-    .item-resumen span:first-child {
-      padding-right: 8px;
-      flex: 1;
-    }
-
-    .item-resumen span:last-child {
-      white-space: nowrap;
-      font-weight: 600;
-    }
+    .item-resumen span:first-child { padding-right: 8px; flex: 1; }
+    .item-resumen span:last-child { white-space: nowrap; font-weight: 600; }
 
     .envio-gratis { color: #16a34a; font-weight: 700; }
 
-    /* ── Botones ── */
     .btn-pagar {
       width: 100%;
       background: #0f0f0f;
@@ -221,67 +219,28 @@
       justify-content: center;
     }
 
-    /* ═══════════════════════════════════
-       RESPONSIVE — MÓVIL
-    ═══════════════════════════════════ */
     @media (max-width: 768px) {
-      .checkout-container {
-        padding: 24px 14px 60px;
-      }
-
-      /* Resumen sube al tope en móvil, pago queda abajo */
-      .checkout-grid {
-        flex-direction: column-reverse;
-        gap: 20px;
-      }
-
-      .resumen-checkout {
-        width: 100%;
-      }
-
-      .pago-card {
-        padding: 20px 16px;
-        width: 100%;
-      }
-
-      .pago-card h2 {
-        font-size: 1.2rem;
-      }
-
-      .metodo-opcion {
-        padding: 12px 14px;
-        gap: 12px;
-      }
-
-      .metodo-icono {
-        font-size: 22px;
-        width: 30px;
-      }
-
+      .checkout-container { padding: 24px 14px 60px; }
+      .checkout-grid { flex-direction: column-reverse; gap: 20px; }
+      .resumen-checkout { width: 100%; }
+      .pago-card { padding: 20px 16px; width: 100%; }
+      .pago-card h2 { font-size: 1.2rem; }
+      .metodo-opcion { padding: 12px 14px; gap: 12px; }
+      .metodo-icono { font-size: 22px; width: 30px; }
       .metodo-texto h4 { font-size: 0.88rem; }
       .metodo-texto p  { font-size: 0.75rem; }
-
       .form-group select,
-      .form-group input {
-        font-size: 16px; /* evita zoom en iOS */
-      }
-
-      .resumen-card {
-        padding: 18px;
-      }
+      .form-group input { font-size: 16px; }
+      .resumen-card { padding: 18px; }
     }
 
     @media (max-width: 480px) {
-      .fila-dos {
-        flex-direction: column;
-        gap: 0;
-      }
+      .fila-dos { flex-direction: column; gap: 0; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ══ BARRA SUPERIOR ══ -->
   <header class="barra-superior">
     <div class="barra-inner">
       <div class="barra-izq">
@@ -306,9 +265,8 @@
 
   <div class="banda-envios-movil">✦ Envíos gratis desde $150.000 ✦</div>
 
-  <!-- ══ NAVBAR ══ -->
   <nav class="navbar">
-    <a href="/" class="logo"><img src="{% static 'imágenes/Proyecto.jpeg' %}" alt="Logo"></a>
+    <a href="/" class="logo"><img src="{% static 'imágenes/Proyecto.png' %}" alt="Logo"></a>
     <div class="menu-nav">
       <a href="/hombres/" class="link-nav">Hombres</a>
       <a href="/mujeres/" class="link-nav">Mujeres</a>
@@ -339,14 +297,12 @@
     <a href="/otros/">Otros</a>
   </div>
 
-  <!-- ══ CONTENIDO ══ -->
   <main class="pagina-contenido">
     <div class="checkout-container">
       <a href="/carrito/" class="btn-volver"><i class="fas fa-arrow-left"></i> Volver al carrito</a>
 
       <div class="checkout-grid">
 
-        <!-- Formulario de pago -->
         <div class="pago-card">
           <h2>Método de pago</h2>
           <p class="subtitulo">Selecciona cómo quieres pagar tu pedido</p>
@@ -378,8 +334,8 @@
             <!-- Formulario PSE -->
             <div class="form-pago" id="form-pse">
               <div class="form-group">
-                <label>Banco</label>
-                <select name="banco_pse">
+                <label>Banco *</label>
+                <select name="banco_pse" id="banco_pse">
                   <option value="">-- Selecciona tu banco --</option>
                   <option>Bancolombia</option>
                   <option>Davivienda</option>
@@ -388,16 +344,17 @@
                   <option>Nequi</option>
                   <option>Daviplata</option>
                 </select>
+                <span class="campo-error" id="error-banco">Selecciona tu banco.</span>
               </div>
               <div class="form-group">
-                <label>Tipo de persona</label>
+                <label>Tipo de persona *</label>
                 <select name="tipo_persona">
                   <option value="natural">Persona Natural</option>
                   <option value="juridica">Persona Jurídica</option>
                 </select>
               </div>
               <div class="form-group">
-                <label>Tipo de documento</label>
+                <label>Tipo de documento *</label>
                 <select name="tipo_doc">
                   <option value="cc">Cédula de Ciudadanía</option>
                   <option value="ce">Cédula de Extranjería</option>
@@ -405,8 +362,9 @@
                 </select>
               </div>
               <div class="form-group">
-                <label>Número de documento</label>
-                <input type="text" name="numero_doc" placeholder="Ej: 1234567890">
+                <label>Número de documento *</label>
+                <input type="text" name="numero_doc" id="numero_doc" placeholder="Ej: 1234567890">
+                <span class="campo-error" id="error-doc">Ingresa tu número de documento.</span>
               </div>
             </div>
 
@@ -417,22 +375,26 @@
                 Solo tarjetas <strong>débito</strong>. No se aceptan crédito.
               </div>
               <div class="form-group">
-                <label>Número de tarjeta</label>
-                <input type="text" name="numero_tarjeta" placeholder="0000 0000 0000 0000" maxlength="19" id="input-tarjeta">
+                <label>Número de tarjeta *</label>
+                <input type="text" name="numero_tarjeta" id="input-tarjeta" placeholder="0000 0000 0000 0000" maxlength="19">
+                <span class="campo-error" id="error-tarjeta">Ingresa un número de tarjeta válido (16 dígitos).</span>
               </div>
               <div class="fila-dos">
                 <div class="form-group">
-                  <label>Vencimiento</label>
-                  <input type="text" name="vencimiento" placeholder="MM/AA" maxlength="5" id="input-venc">
+                  <label>Vencimiento *</label>
+                  <input type="text" name="vencimiento" id="input-venc" placeholder="MM/AA" maxlength="5">
+                  <span class="campo-error" id="error-venc">Ingresa la fecha de vencimiento.</span>
                 </div>
                 <div class="form-group">
-                  <label>CVV</label>
-                  <input type="text" name="cvv" placeholder="000" maxlength="3">
+                  <label>CVV *</label>
+                  <input type="text" name="cvv" id="input-cvv" placeholder="000" maxlength="3">
+                  <span class="campo-error" id="error-cvv">Ingresa el CVV (3 dígitos).</span>
                 </div>
               </div>
               <div class="form-group">
-                <label>Nombre en la tarjeta</label>
-                <input type="text" name="nombre_tarjeta" placeholder="Como aparece en la tarjeta">
+                <label>Nombre en la tarjeta *</label>
+                <input type="text" name="nombre_tarjeta" id="input-nombre-tarjeta" placeholder="Como aparece en la tarjeta">
+                <span class="campo-error" id="error-nombre-tarjeta">Ingresa el nombre en la tarjeta.</span>
               </div>
             </div>
 
@@ -445,7 +407,7 @@
           </form>
         </div>
 
-        <!-- Resumen del pedido -->
+        <!-- Resumen -->
         <div class="resumen-checkout">
           <div class="resumen-card">
             <h4>Resumen del pedido</h4>
@@ -480,7 +442,6 @@
     </div>
   </main>
 
-  <!-- ══ FOOTER ══ -->
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-col">
@@ -511,7 +472,7 @@
   </footer>
 
   <script>
-    /* ── Selección de método de pago ── */
+    /* ── Selección de método ── */
     function seleccionarMetodo(metodo) {
       document.querySelectorAll('.metodo-opcion').forEach(op => op.classList.remove('seleccionado'));
       document.getElementById('opcion-' + metodo).classList.add('seleccionado');
@@ -521,7 +482,73 @@
       const btn = document.getElementById('btn-pagar');
       btn.disabled = false;
       btn.textContent = metodo === 'pse' ? 'Pagar con PSE →' : 'Pagar con Débito →';
+      limpiarErrores();
     }
+
+    /* ── Limpiar errores ── */
+    function limpiarErrores() {
+      document.querySelectorAll('.campo-error').forEach(e => e.classList.remove('visible'));
+      document.querySelectorAll('.error').forEach(e => e.classList.remove('error'));
+    }
+
+    function mostrarError(inputId, errorId) {
+      const input = document.getElementById(inputId);
+      const error = document.getElementById(errorId);
+      if (input) input.classList.add('error');
+      if (error) error.classList.add('visible');
+    }
+
+    /* ── Validación al submit ── */
+    document.getElementById('form-checkout').addEventListener('submit', function(e) {
+      const metodo = document.getElementById('metodo_pago_hidden').value;
+      limpiarErrores();
+      let valido = true;
+
+      if (!metodo) {
+        e.preventDefault();
+        alert('Por favor selecciona un método de pago.');
+        return;
+      }
+
+      if (metodo === 'pse') {
+        const banco = document.getElementById('banco_pse').value;
+        const doc   = document.getElementById('numero_doc').value.trim();
+        if (!banco) {
+          mostrarError('banco_pse', 'error-banco');
+          valido = false;
+        }
+        if (!doc) {
+          mostrarError('numero_doc', 'error-doc');
+          valido = false;
+        }
+      }
+
+      if (metodo === 'debito') {
+        const tarjeta = document.getElementById('input-tarjeta').value.replace(/\s/g,'');
+        const venc    = document.getElementById('input-venc').value.trim();
+        const cvv     = document.getElementById('input-cvv').value.trim();
+        const nombre  = document.getElementById('input-nombre-tarjeta').value.trim();
+
+        if (tarjeta.length < 16) {
+          mostrarError('input-tarjeta', 'error-tarjeta');
+          valido = false;
+        }
+        if (!venc || venc.length < 5) {
+          mostrarError('input-venc', 'error-venc');
+          valido = false;
+        }
+        if (cvv.length < 3) {
+          mostrarError('input-cvv', 'error-cvv');
+          valido = false;
+        }
+        if (!nombre) {
+          mostrarError('input-nombre-tarjeta', 'error-nombre-tarjeta');
+          valido = false;
+        }
+      }
+
+      if (!valido) e.preventDefault();
+    });
 
     /* ── Formato tarjeta ── */
     const inputTarjeta = document.getElementById('input-tarjeta');
