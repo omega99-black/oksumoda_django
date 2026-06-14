@@ -1,49 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Error 404</title>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans&display=swap" rel="stylesheet">
+  <title>Error 404 — Oksumoda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     html, body {
       width: 100%; height: 100%;
       font-family: 'Instrument Sans', sans-serif;
-      background: #000;
-      display: flex; align-items: center; justify-content: center;
+      background: #0f0f0f;
       overflow: hidden;
     }
+
     .contenedor {
       width: 100vw; height: 100vh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      text-align: center; padding: 2rem; position: relative;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
     }
+
     .fondo {
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
+      position: absolute;
+      inset: 0;
       background: url("/static/imágenes/v157_264.png") no-repeat center center;
       background-size: cover;
       opacity: 0.3;
+      z-index: 0;
     }
-    .codigo   { color: #fff; font-weight: 600; font-size: 1.5rem; z-index: 2; }
-    .titulo   { color: #fff; font-weight: 600; font-size: 6vw; margin-top: 2rem; z-index: 2; }
-    .subtitulo{ color: #fff; font-weight: 600; font-size: 2vw; max-width: 80%; margin-top: 2rem; z-index: 2; }
-    .volver   {
-      margin-top: 8rem; color: #fff; font-weight: 600; font-size: 1.5rem;
-      text-decoration: none; z-index: 2; display: inline-flex; align-items: center; gap: 0.5rem;
+
+    .fondo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(15,15,15,0.5) 0%,
+        rgba(15,15,15,0.2) 50%,
+        rgba(15,15,15,0.7) 100%
+      );
     }
-    .volver:hover { color: #EB0029; }
+
+    .numero-deco {
+      position: absolute;
+      z-index: 1;
+      font-size: clamp(120px, 25vw, 300px);
+      font-weight: 700;
+      color: rgba(255,255,255,0.04);
+      letter-spacing: -8px;
+      user-select: none;
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .contenido {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      max-width: 560px;
+      width: 100%;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(235,0,41,0.15);
+      border: 1px solid rgba(235,0,41,0.5);
+      border-radius: 30px;
+      padding: 6px 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #EB0029;
+    }
+
+    .titulo {
+      color: #ffffff;
+      font-weight: 700;
+      font-size: clamp(2rem, 7vw, 4.5rem);
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
+
+    .titulo em {
+      font-style: normal;
+      color: #EB0029;
+    }
+
+    .subtitulo {
+      color: rgba(255,255,255,0.6);
+      font-size: clamp(0.88rem, 2.5vw, 1rem);
+      font-weight: 500;
+      line-height: 1.65;
+      max-width: 420px;
+    }
+
+    .btn-volver {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      color: #0f0f0f;
+      font-weight: 700;
+      font-size: clamp(0.88rem, 2vw, 1rem);
+      padding: 14px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      margin-top: 12px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+
+    .btn-volver:hover {
+      background: #EB0029;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(235,0,41,0.45);
+    }
+
+    .btn-volver i { transition: transform 0.25s; }
+    .btn-volver:hover i { transform: translateX(-4px); }
+
+    @media (max-width: 480px) {
+      .contenedor { padding: 1.5rem; }
+      .btn-volver { width: 100%; justify-content: center; }
+    }
   </style>
 </head>
 <body>
   <div class="contenedor">
     <div class="fondo"></div>
-    <span class="codigo">404</span>
-    <span class="titulo">Página no encontrada</span>
-    <span class="subtitulo">Lo sentimos, no pudimos encontrar la página que estás buscando.</span>
-    <a href="/" class="volver">&#8592; Volver a la página de inicio</a>
+    <span class="numero-deco">404</span>
+    <div class="contenido">
+      <span class="badge">Error 404</span>
+      <h1 class="titulo">Página <em>no</em><br>encontrada</h1>
+      <p class="subtitulo">Lo sentimos, no pudimos encontrar la página que estás buscando. Puede que haya sido movida o que la dirección esté incorrecta.</p>
+      <a href="/" class="btn-volver">
+        <i class="fas fa-arrow-left"></i>
+        Volver al inicio
+      </a>
+    </div>
   </div>
 </body>
 </html>

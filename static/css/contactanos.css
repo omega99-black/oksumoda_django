@@ -1,120 +1,142 @@
-* {
-  box-sizing: border-box;
+/* ════════════════════════════════════════════════════
+   CONTACTANOS — estilos
+════════════════════════════════════════════════════ */
+
+.pagina-contenido {
+  padding-top: 134px; /* 52px barra + 80px navbar + 2px linea */
+  min-height: 100vh;
 }
 
-.pagina-contenido .container {
-  display: flex;
-  width: 100%;
-  min-height: calc(100vh - 116px);
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 4vw 80px;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 60px;
+  align-items: start;
 }
 
+/* ── Panel izquierdo ── */
 .left-panel {
-  background-color: #EB0029;
-  color: white;
-  width: 40%;
-  min-height: calc(100vh - 116px);
-  padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  overflow: hidden;
+  gap: 24px;
+  position: sticky;
+  top: 150px;
 }
 
-/* Renombrado a logo-contacto para no pisar .logo de hombres.css */
-.logo-contacto {
-  width: 140px;
-  height: 140px;
-  background: url("../imágenes/v261_249.png") no-repeat center center;
-  background-size: cover;
-  border-radius: 20px;
-  margin: 0 auto 2rem auto;
+.left-panel h1 {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #0f0f0f;
+  letter-spacing: -0.5px;
 }
 
-.left-panel h1,
-.left-panel p,
+.left-panel h1 span {
+  color: #EB0029;
+}
+
+.left-panel > p {
+  font-size: 0.97rem;
+  color: #767676;
+  line-height: 1.7;
+  font-weight: 500;
+}
+
 .contact-info {
-  text-align: left;
-  width: 100%;
-  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+  padding-top: 24px;
+  border-top: 1px solid #e8e8e8;
 }
 
 .contact-info p {
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.92rem;
+  color: #0f0f0f;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 .contact-info i {
+  color: #EB0029;
   font-size: 1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+  width: 18px;
 }
 
+/* ── Panel derecho — formulario ── */
 .right-panel {
-  background-color: #fff;
-  width: 60%;
-  padding: 3rem 2rem;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.07);
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  align-content: flex-start;
-  min-height: calc(100vh - 116px);
-  overflow-y: auto;
+  gap: 20px;
 }
 
-.right-panel .form-group {
+.form-group {
   display: flex;
   flex-direction: column;
+  gap: 6px;
   width: 100%;
 }
 
-.right-panel .form-group.half {
-  width: calc(50% - 0.75rem);
+.form-group.half {
+  width: calc(50% - 10px);
 }
 
-.right-panel label {
+.form-group label {
+  font-size: 0.86rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
-  font-family: 'Instrument Sans', sans-serif;
+  color: #0f0f0f;
+  letter-spacing: 0.1px;
 }
 
-.right-panel input,
-.right-panel textarea {
-  padding: 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #e2e2e2;
+  border-radius: 10px;
+  font-size: 0.95rem;
   font-family: 'Instrument Sans', sans-serif;
+  color: #0f0f0f;
+  background: #f4f4f2;
+  outline: none;
+  transition: all 0.25s ease;
 }
 
-.right-panel textarea {
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #EB0029;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(235,0,41,0.08);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #bbb;
+}
+
+.form-group textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: 130px;
 }
 
 .error-msg {
-  color: red;
-  font-size: 0.85rem;
-  margin-top: 0.3rem;
-}
-
-.btn-contacto {
-  background-color: #EB0029;
-  color: white;
-  border: none;
-  padding: 0.9rem 1.8rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-family: 'Instrument Sans', sans-serif;
-}
-
-.btn-contacto:hover {
-  background-color: #c80022;
+  color: #EB0029;
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-top: 2px;
 }
 
 .align-right {
@@ -123,16 +145,47 @@
   justify-content: flex-end;
 }
 
-@media (max-width: 768px) {
-  .pagina-contenido .container {
-    flex-direction: column;
+.btn-contacto {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #0f0f0f;
+  color: #ffffff;
+  border: none;
+  padding: 14px 32px;
+  font-size: 0.97rem;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Instrument Sans', sans-serif;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.btn-contacto:hover {
+  background: #EB0029;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(235,0,41,0.3);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 40px 5vw 60px;
   }
-  .left-panel,
-  .right-panel {
-    width: 100%;
-    min-height: auto;
+  .left-panel {
+    position: static;
   }
-  .right-panel .form-group.half {
-    width: 100%;
-  }
+}
+
+@media (max-width: 600px) {
+  .pagina-contenido { padding-top: 140px; }
+  .container { padding: 28px 16px 50px; gap: 28px; }
+  .right-panel { padding: 24px 20px; }
+  .form-group.half { width: 100%; }
+  .left-panel h1 { font-size: 1.7rem; }
+  .btn-contacto { width: 100%; justify-content: center; }
+  .align-right { justify-content: stretch; }
 }

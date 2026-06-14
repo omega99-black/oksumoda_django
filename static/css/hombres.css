@@ -126,7 +126,7 @@ body {
 }
 
 .logo { display: flex; align-items: center; }
-.logo img { width: 44px; height: 44px; object-fit: cover; border-radius: 12px; display: block; }
+.logo img { height: 73px; width: auto; object-fit: contain; border-radius: 0; display: block; }
 
 .menu-nav {
   display: flex;

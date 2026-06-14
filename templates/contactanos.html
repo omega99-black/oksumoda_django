@@ -42,7 +42,7 @@
   <div class="banda-envios-movil">✦ Envíos gratis desde $150.000 ✦</div>
 
   <nav class="navbar">
-    <a href="/" class="logo"><img src="{% static 'imágenes/v290_388.png' %}" alt="Logo"></a>
+    <a href="/" class="logo"><img src="{% static 'imágenes/Proyecto.jpeg' %}" alt="Logo"></a>
     <div class="menu-nav">
       <a href="/hombres/" class="link-nav">Hombres</a>
       <a href="/mujeres/" class="link-nav">Mujeres</a>
@@ -74,47 +74,52 @@
 
   <main class="pagina-contenido">
     <div class="container">
+
+      <!-- Panel izquierdo -->
       <div class="left-panel">
-        <div class="logo-contacto"></div>
-        <h1>Ponte en contacto con <br>nosotros</h1>
-        <p>En Otsu Moda nos encanta escucharte. Si tienes sugerencias, necesitas ayuda con tu compra o simplemente quieres saber más sobre nuestras colecciones, escríbenos. Nuestro equipo estará feliz de responderte lo más pronto posible.</p>
+        <h1>Ponte en<br>contacto con <span>nosotros</span></h1>
+        <p>En Oksumoda nos encanta escucharte. Si tienes sugerencias, necesitas ayuda con tu compra o quieres saber más sobre nuestras colecciones, escríbenos. Nuestro equipo estará feliz de responderte lo más pronto posible.</p>
         <div class="contact-info">
-          <p><i class="fas fa-building"></i> Calle 23 #22-22 Bogotá,<br>Colombia</p>
-          <p><i class="fas fa-phone"></i> + 1 (555) - 09988</p>
-          <p><i class="fas fa-envelope"></i> otsu.moda@email.com</p>
+          <p><i class="fas fa-building"></i> Calle 23 #22-22, Bogotá, Colombia</p>
+          <p><i class="fas fa-phone"></i> +57 (1) 555-09988</p>
+          <p><i class="fas fa-envelope"></i> contacto@oksumoda.com</p>
         </div>
       </div>
 
+      <!-- Panel derecho — formulario -->
       <form class="right-panel" onsubmit="return validarFormulario()">
         <div class="form-group half">
           <label for="nombre">Nombre</label>
-          <input type="text" id="nombre" />
+          <input type="text" id="nombre" placeholder="Tu nombre" />
           <span class="error-msg" id="error-nombre"></span>
         </div>
         <div class="form-group half">
           <label for="apellido">Apellido</label>
-          <input type="text" id="apellido" />
+          <input type="text" id="apellido" placeholder="Tu apellido" />
           <span class="error-msg" id="error-apellido"></span>
         </div>
         <div class="form-group">
           <label for="correo">Correo electrónico</label>
-          <input type="email" id="correo" />
+          <input type="email" id="correo" placeholder="tucorreo@ejemplo.com" />
           <span class="error-msg" id="error-correo"></span>
         </div>
         <div class="form-group">
           <label for="telefono">Número de teléfono</label>
-          <input type="tel" id="telefono" />
+          <input type="tel" id="telefono" placeholder="+57 300 000 0000" />
           <span class="error-msg" id="error-telefono"></span>
         </div>
         <div class="form-group">
           <label for="mensaje">Mensaje</label>
-          <textarea id="mensaje"></textarea>
+          <textarea id="mensaje" placeholder="¿En qué podemos ayudarte?"></textarea>
           <span class="error-msg" id="error-mensaje"></span>
         </div>
         <div class="form-group align-right">
-          <button type="submit" class="btn-contacto">Enviar mensaje</button>
+          <button type="submit" class="btn-contacto">
+            Enviar mensaje <i class="fas fa-arrow-right"></i>
+          </button>
         </div>
       </form>
+
     </div>
   </main>
 
@@ -129,14 +134,14 @@
         : '<i class="fas fa-bars"></i>';
     });
 
-    /* ── Formulario ── */
+    /* ── Validación ── */
     function validarFormulario() {
       const campos = [
-        { id: "nombre", nombre: "Nombre" },
-        { id: "apellido", nombre: "Apellido" },
-        { id: "correo", nombre: "Correo electrónico" },
-        { id: "telefono", nombre: "Teléfono" },
-        { id: "mensaje", nombre: "Mensaje" }
+        { id: "nombre" },
+        { id: "apellido" },
+        { id: "correo" },
+        { id: "telefono" },
+        { id: "mensaje" }
       ];
       let valido = true;
       campos.forEach(campo => {
@@ -149,7 +154,8 @@
           error.textContent = "";
         }
       });
-      return valido ? (window.location.href = "404", false) : false;
+      if (valido) { window.location.href = '/404/'; return false; }
+      return false;
     }
   </script>
 </body>
